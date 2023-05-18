@@ -1,0 +1,12 @@
+APP.js Sample Structure
+
+App.js 
+- Homepage.js
+- loggedIn? DashPage.js
+
+Homepage.js
+- LoginPage.js
+- SignupPage.js
+
+
+jose.saribong@email.com test
