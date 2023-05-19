@@ -2,11 +2,12 @@ APP.js Sample Structure
 
 App.js 
 - Homepage.js
-- loggedIn? DashPage.js
+- loggedIn? (DashPage.js) : (CredentialsPage.js)
 
-Homepage.js
+CredentialsPage.js
 - LoginPage.js
 - SignupPage.js
 
+DashPage.js
 
 jose.saribong@email.com test

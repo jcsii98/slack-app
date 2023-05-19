@@ -1,8 +1,8 @@
-import CredentialsInput from './CredentialsInput.jsx';
+import CredentialsInput from '../components/CredentialsInput.jsx';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function Credentials(props) {
+function CredentialsPage(props) {
   const { setIsLoggedIn, isLoggedIn, email, setEmail } = props;
   const [credentialsLabel, setCredentialsLabel] = useState('Login');
   const [confirmPasswordShow, setConfirmPasswordShow] = useState(false);
@@ -49,7 +49,7 @@ function Credentials(props) {
       }
     } catch (error) {
       console.error(error);
-      setError('Invalid username or password. Please try again.'); // Set the error state
+      setError('An error has occured. Please try again.'); // Set the error state
     }
   }
 
@@ -139,4 +139,4 @@ function Credentials(props) {
   );
 }
 
-export default Credentials;
+export default CredentialsPage;

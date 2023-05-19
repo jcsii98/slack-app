@@ -1,4 +1,4 @@
-import Credentials from '../components/Credentials.jsx';
+import CredentialsPage from './CredentialsPage.jsx';
 import Header from '../components/Header.jsx';
 import { useEffect, useState } from 'react';
 import DashPage from './DashPage.jsx';
@@ -19,7 +19,7 @@ function Homepage(props) {
           setIsLoggedIn={setIsLoggedIn}
         />
       ) : (
-        <Credentials
+        <CredentialsPage
           email={email}
           setEmail={setEmail}
           isLoggedIn={isLoggedIn}

@@ -6,6 +6,9 @@ body {
 #root {
   width: 100%;
   height: 100%;
+  background-color: #2b2d42;
+  color: #8d99ae;
+  overflow: hidden;
 }
 
 .main-form {
@@ -25,8 +28,47 @@ body {
   margin-right: 16px;
   flex-wrap: nowrap !important;
   flex-direction: row;
+  justify-content: space-around !important;
+}
+.navbar-container {
+  border-bottom: 1px solid #8d99ae;
 }
 
 .header-logo {
-  width: 120px;
+  width: 100px;
+}
+
+.nav {
+  flex-direction: column;
+  padding: 10px;
+  padding-right: 0px;
+}
+.nav-tabs {
+  --bs-nav-tabs-border-radius: 0 !important;
+}
+.sidebar-container {
+  width: 200px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-item {
+  border-bottom: 1px solid #8d99ae;
+  border-right: 1px solid #8d99ae;
+}
+
+.nav-link {
+  text-decoration: none !important;
+  color: white !important;
+}
+.nav-item {
+  color: white !important;
+}
+
+.sidebar-header {
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 8px;
+  padding-top: 8px;
 }

@@ -1,8 +1,10 @@
+import Sidebar from '../components/Sidebar';
+
 function DashPage(props) {
   const { isLoggedIn, setIsLoggedIn, email, setEmail } = props;
   return (
     <>
-      <div>Welcome, {email}</div>
+      <Sidebar />
     </>
   );
 }
