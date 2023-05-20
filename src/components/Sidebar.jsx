@@ -2,7 +2,9 @@ function Sidebar() {
   return (
     <>
       <div className="sidebar-container">
-        <div className="sidebar-header sidebar-item nav-item">Avion School</div>
+        <div className="sidebar-header sidebar-item nav-item nav nav-tabs">
+          Avion School
+        </div>
         <ul className="sidebar-item nav nav-tabs">
           <li className="nav-item">
             <a className="nav-link" href="#">

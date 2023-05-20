@@ -6,32 +6,31 @@ function Header(props) {
   };
   return (
     <>
-      <div class="navbar-container">
+      <div className="navbar-container">
         <nav className="navbar bg-body-tertiary">
           <img className="header-logo" src={Logo} />
           {isLoggedIn && (
             <>
-              <form className="container-fluid">
+              <form className="container-form">
                 <div className="input-group">
-                  <span className="input-group-text" id="basic-addon1">
-                    @
-                  </span>
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="Username"
                     aria-label="Username"
                     aria-describedby="basic-addon1"
                   />
                 </div>
               </form>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={buttonClick}
-              >
-                Log out
-              </button>
+              <div className="header-button">
+                {' '}
+                <button
+                  type="button"
+                  className="btn btn-link"
+                  onClick={buttonClick}
+                >
+                  Log out
+                </button>
+              </div>
             </>
           )}
         </nav>

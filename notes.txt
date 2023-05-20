@@ -11,3 +11,6 @@ CredentialsPage.js
 DashPage.js
 
 jose.saribong@email.com test
+
+
+API doesnt have sender_id 

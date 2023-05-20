@@ -10,14 +10,16 @@ function Homepage(props) {
   }, [isLoggedIn]);
   return (
     <>
-      <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       {isLoggedIn ? (
-        <DashPage
-          email={email}
-          setEmail={setEmail}
-          isLoggedIn={isLoggedIn}
-          setIsLoggedIn={setIsLoggedIn}
-        />
+        <>
+          <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+          <DashPage
+            email={email}
+            setEmail={setEmail}
+            isLoggedIn={isLoggedIn}
+            setIsLoggedIn={setIsLoggedIn}
+          />
+        </>
       ) : (
         <CredentialsPage
           email={email}

@@ -77,62 +77,58 @@ function CredentialsPage(props) {
   };
 
   return (
-    <div className="container">
-      <div className="row justify-content-center">
-        <div className="col-lg-6">
-          <div className="card my-5">
-            <div className="card-body p-5">
-              <h1 className="mb-4">{credentialsLabel}</h1>
-              <form autoComplete="off" onSubmit={handleSubmitForm}>
-                <div className="mb-3 main-form">
-                  <CredentialsInput
-                    name="username"
-                    type="text"
-                    label="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                </div>
-                <div className="mb-3 main-form">
-                  <CredentialsInput
-                    name="password"
-                    type="password"
-                    label="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-                {confirmPasswordShow && (
-                  <div className="mb-3 main-form">
-                    <CredentialsInput
-                      name="confirm password"
-                      type="password"
-                      label="Confirm Password"
-                      value={confirmPassword} // Bind value to state variable
-                      onChange={(e) => setConfirmPassword(e.target.value)} // Update state on change
-                    />
-                  </div>
-                )}
-                {error && <div className="text-danger mb-3">{error}</div>}
-                <button type="submit" className="btn btn-primary">
-                  {credentialsLabel}
-                </button>
-                <div className="mt-3">
-                  {confirmPasswordShow
-                    ? 'Already have an account?'
-                    : "Don't have an account?"}{' '}
-                  <button
-                    className="btn btn-link p-0 text-btn"
-                    type="button"
-                    onClick={showSignup}
-                  >
-                    {confirmPasswordShow ? 'Login here' : 'Sign up here'}
-                  </button>
-                  .
-                </div>
-              </form>
+    <div className="body-container">
+      <div className="container">
+        <div className="card-body">
+          <h1 className="mb-4">{credentialsLabel}</h1>
+          <form autoComplete="off" onSubmit={handleSubmitForm}>
+            <div className="mb-3 main-form">
+              <CredentialsInput
+                name="username"
+                type="text"
+                label="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
             </div>
-          </div>
+            <div className="mb-3 main-form">
+              <CredentialsInput
+                name="password"
+                type="password"
+                label="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            {confirmPasswordShow && (
+              <div className="mb-3 main-form">
+                <CredentialsInput
+                  name="confirm password"
+                  type="password"
+                  label="Confirm Password"
+                  value={confirmPassword} // Bind value to state variable
+                  onChange={(e) => setConfirmPassword(e.target.value)} // Update state on change
+                />
+              </div>
+            )}
+            {error && <div className="text-danger mb-3">{error}</div>}
+            <button type="submit" className="btn btn-primary">
+              {credentialsLabel}
+            </button>
+            <div className="mt-3">
+              {confirmPasswordShow
+                ? 'Already have an account?'
+                : "Don't have an account?"}{' '}
+              <button
+                className="btn btn-link p-0 text-btn"
+                type="button"
+                onClick={showSignup}
+              >
+                {confirmPasswordShow ? 'Login here' : 'Sign up here'}
+              </button>
+              .
+            </div>
+          </form>
         </div>
       </div>
     </div>
