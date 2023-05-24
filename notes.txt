@@ -1,0 +1,20 @@
+APP.js Sample Structure
+
+App.js 
+- Homepage.js
+- loggedIn? (DashPage.js) : (CredentialsPage.js)
+
+CredentialsPage.js
+- LoginPage.js
+- SignupPage.js
+
+DashPage.js
+
+jose.saribong@email.com test
+
+
+API doesnt have sender_id 
+
+----
+suggestion/s:
+-export default can be directly put on the first function declaration
