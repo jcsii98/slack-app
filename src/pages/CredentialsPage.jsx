@@ -44,6 +44,13 @@ function CredentialsPage(props) {
       if (response.status === 200) {
         setIsLoggedIn(true);
         console.log('user is logged in', email);
+        sessionStorage.setItem(
+          'access-token',
+          response.headers['access-token']
+        );
+        sessionStorage.setItem('client', response.headers['client']);
+        sessionStorage.setItem('expiry', response.headers['expiry']);
+        sessionStorage.setItem('uid', response.headers['uid']);
       } else {
         setError('Invalid username or password. Please try again.'); // Set the error state
       }

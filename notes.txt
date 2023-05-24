@@ -13,4 +13,8 @@ DashPage.js
 jose.saribong@email.com test
 
 
-API doesnt have sender_id 
+ChatHeader.jsx
+channel && members button 
+
+Chat.jsx
+directMessages && DirectMessagesHeader
