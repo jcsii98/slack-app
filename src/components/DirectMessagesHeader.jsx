@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function DirectMessagesHeader() {
+function DirectMessagesHeader(props) {
+  const { userReceiver, setUserReceiver } = props;
   const [inputValue, setInputValue] = useState('');
   const [userExists, setUserExists] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -16,11 +17,22 @@ function DirectMessagesHeader() {
           uid: sessionStorage.getItem('uid'),
         },
       });
-      const users = response.data.data;
 
+      const users = response.data.data;
       const exists = users.some((user) => user.uid === inputValue);
 
       setUserExists(exists);
+
+      if (exists) {
+        const userData = users.find((user) => user.uid === inputValue);
+        const userId = userData.id; // Access the "id" field from userData
+        console.log('User data:', userData);
+        setUserReceiver(userId); // Set the userReceiver state to the userId
+        console.log(userReceiver);
+      } else {
+        console.log('User does not exist');
+        setUserReceiver();
+      }
     } catch (error) {
       console.error('Failed to retrieve user:', error);
     }
@@ -44,15 +56,18 @@ function DirectMessagesHeader() {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleCheckSubmit = (event) => {
     event.preventDefault();
     const value = event.target.value;
     checkUserExists(value);
   };
+  useEffect(() => {
+    console.log('userReceiver:', userReceiver);
+  }, [userReceiver]);
   return (
     <>
       <div className="dm-header">
-        <form onSubmit={handleSubmit} className="dm-form">
+        <form onSubmit={handleCheckSubmit} className="dm-form">
           <div className="input-field">
             <span className="prefix">To: </span>
             <input

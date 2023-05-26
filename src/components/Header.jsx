@@ -3,6 +3,7 @@ function Header(props) {
   const { setIsLoggedIn, isLoggedIn } = props;
   const buttonClick = () => {
     setIsLoggedIn(false);
+    sessionStorage.clear();
   };
   return (
     <>
