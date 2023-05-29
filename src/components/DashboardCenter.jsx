@@ -1,11 +1,13 @@
 import ChatHeader from './ChatHeader';
 import Chat from './Chat';
-function DashboardCenter() {
+function DashboardCenter(props) {
+  const { client,loggedUser,contacts,setContacts } = props
+
   return (
     <>
       <div className="chat-container">
         <ChatHeader />
-        <Chat />
+        <Chat client={client} loggedUser={loggedUser} contacts={contacts} setContacts={setContacts}/>
       </div>
     </>
   );

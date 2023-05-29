@@ -1,23 +1,15 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 
 function DirectMessagesHeader(props) {
-  const { userReceiver, setUserReceiver } = props;
+  const { client,setReceiverData } = props;
   const [inputValue, setInputValue] = useState('');
   const [userExists, setUserExists] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const checkUserExists = async () => {
     try {
-      const response = await axios.get('http://206.189.91.54/api/v1/users', {
-        headers: {
-          'access-token': sessionStorage.getItem('access-token'),
-          client: sessionStorage.getItem('client'),
-          expiry: sessionStorage.getItem('expiry'),
-          uid: sessionStorage.getItem('uid'),
-        },
-      });
-
+      const response = await client.get("/users")
+      console.log(response)
       const users = response.data.data;
       const exists = users.some((user) => user.uid === inputValue);
 
@@ -25,13 +17,11 @@ function DirectMessagesHeader(props) {
 
       if (exists) {
         const userData = users.find((user) => user.uid === inputValue);
-        const userId = userData.id; // Access the "id" field from userData
         console.log('User data:', userData);
-        setUserReceiver(userId); // Set the userReceiver state to the userId
-        console.log(userReceiver);
+        setReceiverData(userData)
       } else {
         console.log('User does not exist');
-        setUserReceiver();
+        setReceiverData()
       }
     } catch (error) {
       console.error('Failed to retrieve user:', error);
@@ -61,9 +51,6 @@ function DirectMessagesHeader(props) {
     const value = event.target.value;
     checkUserExists(value);
   };
-  useEffect(() => {
-    console.log('userReceiver:', userReceiver);
-  }, [userReceiver]);
   return (
     <>
       <div className="dm-header">

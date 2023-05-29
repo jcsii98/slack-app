@@ -3,17 +3,7 @@ import Channels from "./Channels"
 import DirectMessages from "./DirectMessages";
 
 export default function Sidebar(props) {
-  const { loggedUser,config } = props
-
-  const client = axios.create({
-    baseURL: "http://206.189.91.54/api/v1",
-    headers: {
-      "access-token": config.accessToken,
-      "client": config.client,
-      "expiry": config.expiry,
-      "uid": config.uid
-    }
-  });
+  const { client,loggedUser } = props
 
   const handleOnClick = () => {
       // gets otherUser data and displays it to Chat component

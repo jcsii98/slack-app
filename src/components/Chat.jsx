@@ -1,61 +1,49 @@
 import DirectMessagesHeader from './DirectMessagesHeader';
-import Channels from './Channels';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-import axios from 'axios';
+function Chat(props) {
+  const { client,loggedUser,contacts,setContacts } = props
 
-function Chat() {
   // message = receiver_id, receiver_class, body
-  const [userReceiver, setUserReceiver] = useState('');
-  const [message, setMessage] = useState('');
-  const [ contacts,setContacts ] = useState(() => {
-    localStorage.getItem("contacts") ? localStorage.getItem("contacts") : []
-  })
+  const [ message, setMessage ] = useState('');
+  const [ receiverData,setReceiverData ] = useState({})
 
   const sendMessage = async () => {
-    const url = 'http://206.189.91.54/api/v1/messages';
-    const receiverId = userReceiver;
-    const receiverClass = 'User';
-
-    const headers = {
-      'Content-Type': 'application/json',
-      'access-token': sessionStorage.getItem('access-token'),
-      client: sessionStorage.getItem('client'),
-      expiry: sessionStorage.getItem('expiry'),
-      uid: sessionStorage.getItem('uid'),
-    };
-
-    const requestBody = {
-      receiver_id: receiverId,
-      receiver_class: receiverClass,
-      body: message,
-    };
-
     try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(requestBody),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
+      const response = await client.post("/messages", {
+        receiver_id: receiverData.id,
+        receiver_class: "User",
+        body: message
+      })
+      console.log(response)
+      if (response.statusText === "OK") {
+        console.log(loggedUser)
+        console.log(receiverData)
         console.log('Message sent!');
-
         setMessage('');
         setContacts(() => {
-          localStorage.setItem("contacts",data)
+          const localContacts = JSON.parse(localStorage.getItem("contacts"))
+          const userContacts = localContacts.find( data => {
+            return data.userId === loggedUser.id
+          })
+          console.log(userContacts)
+          if(userContacts) {
+            console.log("found!")
+          } else {
+            console.log("not found!")
+            // return [ { userId: user.id, userContacts: [ { contactId: receiver.id, contactName: receiver.email } ] } ]
+          }
         })
-        console.log('Response:', data);
+        console.log('Response:', response.data);
       } else {
         console.error('Failed to send message');
-        console.log('Error:', data);
+        console.log('Error:', response.data);
       }
     } catch (error) {
       console.error('Error:', error);
     }
   };
+
   const handleChatSubmit = (event) => {
     event.preventDefault();
     const value = event.target.value;
@@ -66,8 +54,8 @@ function Chat() {
     <>
       <div className="chat-main-container">
         <DirectMessagesHeader
-          userReceiver={userReceiver}
-          setUserReceiver={setUserReceiver}
+          client={client}
+          setReceiverData={setReceiverData}
         />
         <div className="messages-container"></div>
         <div className="chat-footer">

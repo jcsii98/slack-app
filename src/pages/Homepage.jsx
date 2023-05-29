@@ -8,7 +8,7 @@ function Homepage(props) {
 
   const [ loggedUser, setLoggedUser ] = useState({});
   const [ config,setConfig ] = useState({ 
-   accessToken: () => { sessionStorage.getItem("accessToken") ? sessionStorage.getItem("accessToken") : "" },
+   accessToken: "",
    client:"",
    expiry:"",
    uid:""

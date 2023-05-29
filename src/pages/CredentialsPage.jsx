@@ -46,6 +46,7 @@ function CredentialsPage(props) {
       console.log("here")
       console.log(response.data.data);
       // Check if the response indicates a successful login
+      const userData = response.data.data
 
       setConfig({ 
         accessToken: response.headers["access-token"],
@@ -58,6 +59,24 @@ function CredentialsPage(props) {
         setIsLoggedIn(true);
         setLoggedUser({...response.data.data})
 
+        let localContacts = JSON.parse(localStorage.getItem("contacts"))
+        console.log("contacts: ")
+        console.log(localContacts)
+
+        if(localContacts) {
+          const userContacts = localContacts.find( data => {
+            console.log("data: " + data.userId)
+            console.log("user: " + userData.id)
+            return data.userId === userData.id
+          })
+          console.log(userContacts)
+          if(!userContacts) {
+            localStorage.setItem("contacts",JSON.stringify([...localContacts, { userId: userData.id, contacts: [] }]))
+          }
+        } else {
+          localStorage.setItem("contacts", JSON.stringify([ { userId: userData.id, contacts: [] } ]))
+        }
+        
         sessionStorage.setItem('access-token', response.headers['access-token']);
         sessionStorage.setItem('client', response.headers['client']);
         sessionStorage.setItem('expiry', response.headers['expiry']);
