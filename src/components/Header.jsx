@@ -3,6 +3,7 @@ function Header(props) {
   const { setIsLoggedIn, isLoggedIn } = props;
   const buttonClick = () => {
     setIsLoggedIn(false);
+    sessionStorage.clear();
   };
   return (
     <>
@@ -11,16 +12,7 @@ function Header(props) {
           <img className="header-logo" src={Logo} />
           {isLoggedIn && (
             <>
-              <form className="container-form">
-                <div className="input-group">
-                  <input
-                    type="text"
-                    className="form-control"
-                    aria-label="Username"
-                    aria-describedby="basic-addon1"
-                  />
-                </div>
-              </form>
+              <form className="container-form"></form>
               <div className="header-button">
                 {' '}
                 <button

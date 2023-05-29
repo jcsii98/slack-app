@@ -12,10 +12,12 @@ function CredentialsPage(props) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
-  const { config,setConfig } = props
+  const { setConfig } = props;
+  const { loggedUser, setLoggedUser } = props;
 
   useEffect(() => {
     console.log("isLoggedIn[CredentialsPage]: " + isLoggedIn);
+    console.log(loggedUser)
   }, [isLoggedIn]);
 
   const showSignup = () => {
@@ -41,7 +43,8 @@ function CredentialsPage(props) {
           password: password,
         }
       );
-      console.log(response);
+      console.log("here")
+      console.log(response.data.data);
       // Check if the response indicates a successful login
 
       setConfig({ 
@@ -53,7 +56,13 @@ function CredentialsPage(props) {
 
       if (response.status === 200) {
         setIsLoggedIn(true);
-        localStorage.setItem("access-token", config.accessToken)
+        setLoggedUser({...response.data.data})
+
+        sessionStorage.setItem('access-token', response.headers['access-token']);
+        sessionStorage.setItem('client', response.headers['client']);
+        sessionStorage.setItem('expiry', response.headers['expiry']);
+        sessionStorage.setItem('uid', response.headers['uid']);
+
         console.log('user is logged in', email);
       } else {
         setError('Invalid username or password. Please try again.'); // Set the error state
@@ -97,7 +106,7 @@ function CredentialsPage(props) {
             <div className="mb-3 main-form">
               <CredentialsInput
                 name="username"
-                type="text"
+                type="email"
                 label="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}

@@ -1,31 +1,69 @@
-import SidebarList from "./SidebarList";
 import axios from 'axios';
+import Channels from "./Channels"
+import DirectMessages from "./DirectMessages";
 
 export default function Sidebar(props) {
+  const { loggedUser,config } = props
 
-  const { config,setConfig } = props
+  const client = axios.create({
+    baseURL: "http://206.189.91.54/api/v1",
+    headers: {
+      "access-token": config.accessToken,
+      "client": config.client,
+      "expiry": config.expiry,
+      "uid": config.uid
+    }
+  });
+
+  const handleOnClick = () => {
+      // gets otherUser data and displays it to Chat component
+  }
+
+  const testClick = async () => {
+    const response = await client.get(`/channels`)
+    console.log(response)
+    console.log(response.data.data)
+  }
 
   async function handleClick () {
-    const client = axios.create({
-      baseURL: "http://206.189.91.54/api/v1",
-      headers: {
-        "access-token": config.accessToken,
-        "client": config.client,
-        "expiry": config.expiry,
-        "uid": config.uid
-      }
-    });
-
-    console.log(client)
-
     try {
       // const response = await client.post(`messages`, {
-      //   receiver_id: "3422",
+      //   receiver_id: "54",
       //   receiver_class: "User",
-      //   body: "paano mag luto ng sinigang na isda?"
+      //   body: "bumili ka ng toyo at suka sa tindahan ni aleng nena"
       // })
-      const response = await client.get(`/messages?receiver_id=3446&receiver_class=User`)
-      console.log(response) 
+
+      const response = await client.get(`/users`)
+      const users = Object.values(response.data)[0]
+
+      const userEndpoints = users.map( user => {
+        return `/messages?receiver_id=${user.id}&receiver_class=User`
+      })
+
+      Promise.allSettled(userEndpoints.map(async (endpoint) => 
+        await client.get(endpoint)
+          .catch(error => {
+            console.log(error)
+          }) 
+      )).then( results => {
+        // const val = results.reduce( (filtered, result) => {
+        //   if(result.status === 'fulfilled' && result.value.data.data.length !== 0) {
+        //     filtered.push(Object.values(result.value.data.data))
+        //   }
+        //   return filtered
+        // },[])
+        // console.log(val)
+
+        // console.log(results)
+
+        // const filteredList = getFilteredList(users)
+
+        // console.log("filtered list: ")
+        // console.log(response)
+      }).catch( error => console.log(error) )
+
+      
+
     } catch (error) {
       console.log(error)
     }
@@ -58,9 +96,9 @@ export default function Sidebar(props) {
             </a>
           </li>
         </ul>
-        <button onClick={handleClick} placeholder="click me!" />
-        {/* <SidebarList title="Channels" type="Channels" user={userData}/>
-        <SidebarList title="Direct Messages" type="DirectMessages" user={userData}/> */}
+        <Channels client={client} loggedUser={loggedUser}/>
+        <DirectMessages client={client} loggedUser={loggedUser}/>
+        {/* <button onClick={testClick}>Test</button> */}
       </div>
   );
 }

@@ -6,8 +6,9 @@ function Homepage(props) {
   const { isLoggedIn, setIsLoggedIn } = props;
   const [email, setEmail] = useState('');
 
+  const [ loggedUser, setLoggedUser ] = useState({});
   const [ config,setConfig ] = useState({ 
-   accessToken: () => { localStorage.getItem("accessToken") ? localStorage.getItem("accessToken") : "" },
+   accessToken: () => { sessionStorage.getItem("accessToken") ? sessionStorage.getItem("accessToken") : "" },
    client:"",
    expiry:"",
    uid:""
@@ -29,6 +30,7 @@ function Homepage(props) {
             setIsLoggedIn={setIsLoggedIn}
             config={config}
             setConfig={setConfig}
+            loggedUser={loggedUser}
           />
         </>
       ) : (
@@ -39,6 +41,8 @@ function Homepage(props) {
           setIsLoggedIn={setIsLoggedIn}
           config={config}
           setConfig={setConfig}
+          loggedUser={loggedUser}
+          setLoggedUser={setLoggedUser}
         />
       )}
     </>
