@@ -1,7 +1,7 @@
 import Sidebar from '../components/Sidebar';
 import DashboardCenter from '../components/DashboardCenter';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 function DashPage(props) {
   const { isLoggedIn, setIsLoggedIn, email, setEmail } = props;
