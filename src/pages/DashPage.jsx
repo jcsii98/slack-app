@@ -6,11 +6,8 @@ import { useEffect, useState } from 'react';
 function DashPage(props) {
   const { isLoggedIn, setIsLoggedIn, email, setEmail } = props;
   const { config,loggedUser } = props
-  const [ contacts,setContacts ] = useState(localStorage.getItem("contacts"))
-
-  useEffect(() => {
-    console.log(contacts)
-  },[contacts])
+  const [ contacts,setContacts ] = useState(JSON.parse(localStorage.getItem("contacts")))
+  const [ messageSuccess, setMessageSuccess ] = useState(false)
 
   const client = axios.create({
     baseURL: "http://206.189.91.54/api/v1",
@@ -25,8 +22,21 @@ function DashPage(props) {
   return (
     <>
       <div className="dashboard-center-container">
-        <Sidebar client={client} loggedUser={loggedUser}/>
-        <DashboardCenter client={client} loggedUser={loggedUser} contacts={contacts} setContacts={setContacts}/>
+        <Sidebar 
+          client={client}
+          loggedUser={loggedUser}
+          contacts={contacts}
+          setContacts={setContacts}
+          messageSuccess={messageSuccess}
+        />
+        <DashboardCenter 
+          client={client}
+          loggedUser={loggedUser}
+          contacts={contacts}
+          setContacts={setContacts}
+          messageSuccess={messageSuccess}
+          setMessageSuccess={setMessageSuccess}
+        />
       </div>
     </>
   );

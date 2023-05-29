@@ -1,5 +1,7 @@
-function Message() {
-  return <></>;
+export default function Message() {
+  return (
+    <>
+      hello
+    </>
+  )
 }
-
-export default Message;

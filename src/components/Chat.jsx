@@ -1,8 +1,9 @@
 import DirectMessagesHeader from './DirectMessagesHeader';
+import Message from './Message';
 import { useState } from 'react';
 
 function Chat(props) {
-  const { client,loggedUser,contacts,setContacts } = props
+  const { client,loggedUser,setContacts,setMessageSuccess } = props
 
   // message = receiver_id, receiver_class, body
   const [ message, setMessage ] = useState('');
@@ -17,23 +18,27 @@ function Chat(props) {
       })
       console.log(response)
       if (response.statusText === "OK") {
-        console.log(loggedUser)
-        console.log(receiverData)
-        console.log('Message sent!');
         setMessage('');
         setContacts(() => {
           const localContacts = JSON.parse(localStorage.getItem("contacts"))
-          const userContacts = localContacts.find( data => {
-            return data.userId === loggedUser.id
+          
+          const updatedLocalContacts = localContacts.map( contactData => {
+            if(contactData.userId === loggedUser.id) {
+              console.log("here!")
+              console.log(contactData.contacts)
+              const bool = contactData.contacts.find( data => {
+                return data.id === receiverData.id
+              })
+              if(!bool) {
+                contactData.contacts = [ ...contactData.contacts, { id: receiverData.id, name: receiverData.email } ]
+              }
+            }
+            return contactData
           })
-          console.log(userContacts)
-          if(userContacts) {
-            console.log("found!")
-          } else {
-            console.log("not found!")
-            // return [ { userId: user.id, userContacts: [ { contactId: receiver.id, contactName: receiver.email } ] } ]
-          }
+          localStorage.setItem("contacts",JSON.stringify(updatedLocalContacts))
+          return updatedLocalContacts
         })
+        setMessageSuccess(true)
         console.log('Response:', response.data);
       } else {
         console.error('Failed to send message');
@@ -57,7 +62,7 @@ function Chat(props) {
           client={client}
           setReceiverData={setReceiverData}
         />
-        <div className="messages-container"></div>
+        <Message />
         <div className="chat-footer">
           <div className="chat-input-container">
             <div className="chat-input-header">chat symbols here</div>

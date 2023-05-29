@@ -14,10 +14,6 @@ function Homepage(props) {
    uid:""
   })
 
-  useEffect(() => {
-    console.log("isLoggedIn[Homepage]: " + isLoggedIn);
-    console.log(config)
-  }, [isLoggedIn]);
   return (
     <>
       {isLoggedIn ? (

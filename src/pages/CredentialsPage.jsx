@@ -15,22 +15,15 @@ function CredentialsPage(props) {
   const { setConfig } = props;
   const { loggedUser, setLoggedUser } = props;
 
-  useEffect(() => {
-    console.log("isLoggedIn[CredentialsPage]: " + isLoggedIn);
-    console.log(loggedUser)
-  }, [isLoggedIn]);
-
   const showSignup = () => {
     if (credentialsLabel === 'Login') {
       setCredentialsLabel('Signup');
       setConfirmPasswordShow(true);
       setSubmitFunction(true);
-      console.log('signup');
     } else {
       setCredentialsLabel('Login');
       setConfirmPasswordShow(false);
       setSubmitFunction(false);
-      console.log('login');
     }
   };
 
@@ -43,9 +36,6 @@ function CredentialsPage(props) {
           password: password,
         }
       );
-      console.log("here")
-      console.log(response.data.data);
-      // Check if the response indicates a successful login
       const userData = response.data.data
 
       setConfig({ 
@@ -60,16 +50,11 @@ function CredentialsPage(props) {
         setLoggedUser({...response.data.data})
 
         let localContacts = JSON.parse(localStorage.getItem("contacts"))
-        console.log("contacts: ")
-        console.log(localContacts)
 
         if(localContacts) {
           const userContacts = localContacts.find( data => {
-            console.log("data: " + data.userId)
-            console.log("user: " + userData.id)
             return data.userId === userData.id
           })
-          console.log(userContacts)
           if(!userContacts) {
             localStorage.setItem("contacts",JSON.stringify([...localContacts, { userId: userData.id, contacts: [] }]))
           }
@@ -81,8 +66,6 @@ function CredentialsPage(props) {
         sessionStorage.setItem('client', response.headers['client']);
         sessionStorage.setItem('expiry', response.headers['expiry']);
         sessionStorage.setItem('uid', response.headers['uid']);
-
-        console.log('user is logged in', email);
       } else {
         setError('Invalid username or password. Please try again.'); // Set the error state
       }
@@ -99,9 +82,7 @@ function CredentialsPage(props) {
         password: password,
         password_confirmation: confirmPassword
       });
-      console.log(response.data);
     } catch (error) {
-      console.error("@@@@@");
       console.error(error);
       setError('User already exists. Please try again.'); // Set the error state
     }

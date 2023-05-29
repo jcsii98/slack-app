@@ -1,9 +1,8 @@
-import axios from 'axios';
 import Channels from "./Channels"
 import DirectMessages from "./DirectMessages";
 
 export default function Sidebar(props) {
-  const { client,loggedUser } = props
+  const { client,loggedUser,contacts,setContacts,messageSuccess } = props
 
   const handleOnClick = () => {
       // gets otherUser data and displays it to Chat component
@@ -87,7 +86,7 @@ export default function Sidebar(props) {
           </li>
         </ul>
         <Channels client={client} loggedUser={loggedUser}/>
-        <DirectMessages client={client} loggedUser={loggedUser}/>
+        <DirectMessages client={client} loggedUser={loggedUser} contacts={contacts} messageSuccess={messageSuccess}/>
         {/* <button onClick={testClick}>Test</button> */}
       </div>
   );

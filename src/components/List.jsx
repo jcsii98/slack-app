@@ -1,6 +1,6 @@
 export default function List(props) {
     const { title,type,classType,data,callback } = props
-    
+
     return (
         <>
             <h4 className='p-2 m-2'>{title}</h4>
