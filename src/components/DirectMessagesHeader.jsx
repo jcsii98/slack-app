@@ -40,30 +40,42 @@ function DirectMessagesHeader(props) {
 
   const checkChannelExists = async (value) => {
     try {
-      const response = await axios.get(
-        `http://206.189.91.54/api/v1/channels/${value}`,
-        {
-          headers: {
-            'access-token': sessionStorage.getItem('access-token'),
-            client: sessionStorage.getItem('client'),
-            expiry: sessionStorage.getItem('expiry'),
-            uid: sessionStorage.getItem('uid'),
-          },
-        }
-      );
+      const response = await axios.get('http://206.189.91.54/api/v1/channels', {
+        headers: {
+          'access-token': sessionStorage.getItem('access-token'),
+          client: sessionStorage.getItem('client'),
+          expiry: sessionStorage.getItem('expiry'),
+          uid: sessionStorage.getItem('uid'),
+        },
+      });
 
       if (response.status === 200) {
-        const channelDetails = response.data;
-        console.log('Channel details:', channelDetails);
-        setUserReceiver(value);
-        setReceiverClass('Channel');
-        setReceiverExists('exists');
-        // Handle channel details
+        const channels = response.data.data; // Access the "data" field of the response
+
+        console.log('Channels:', channels); // Log channels to inspect its structure
+
+        const channelExists = channels.some(
+          (channel) => channel.name === value
+        );
+
+        if (channelExists) {
+          console.log(`Channel with name '${value}' exists`);
+          const channelData = channels.find(
+            (channel) => channel.name === value
+          );
+          console.log('Channel Data:', channelData);
+          const channelId = channelData.id;
+          setUserReceiver(channelId);
+          setReceiverClass('Channel');
+          setReceiverExists('exists');
+        } else {
+          console.log(`Channel with name '${value}' does not exist`);
+        }
       } else {
-        throw new Error('Failed to get channel details');
+        throw new Error('Failed to get channels');
       }
     } catch (error) {
-      console.error('Failed to get channel details:', error);
+      console.error('Failed to get channels:', error);
       // Handle error
     }
   };
