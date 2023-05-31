@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function DirectMessagesHeader(props) {
-  const { userReceiver, setUserReceiver } = props;
+  const { userReceiver, setUserReceiver, receiverClass, setReceiverClass } =
+    props;
   const [inputValue, setInputValue] = useState('');
-  const [userExists, setUserExists] = useState(false);
+  const [receiverExists, setReceiverExists] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const checkUserExists = async () => {
+  const checkUserExists = async (value) => {
     try {
       const response = await axios.get('http://206.189.91.54/api/v1/users', {
         headers: {
@@ -19,22 +20,51 @@ function DirectMessagesHeader(props) {
       });
 
       const users = response.data.data;
-      const exists = users.some((user) => user.uid === inputValue);
-
-      setUserExists(exists);
+      const exists = users.some((user) => user.uid === value);
 
       if (exists) {
-        const userData = users.find((user) => user.uid === inputValue);
+        const userData = users.find((user) => user.uid === value);
         const userId = userData.id; // Access the "id" field from userData
         console.log('User data:', userData);
         setUserReceiver(userId); // Set the userReceiver state to the userId
-        console.log(userReceiver);
+        setReceiverClass('User');
+        setReceiverExists('exists');
       } else {
         console.log('User does not exist');
         setUserReceiver();
       }
     } catch (error) {
       console.error('Failed to retrieve user:', error);
+    }
+  };
+
+  const checkChannelExists = async (value) => {
+    try {
+      const response = await axios.get(
+        `http://206.189.91.54/api/v1/channels/${value}`,
+        {
+          headers: {
+            'access-token': sessionStorage.getItem('access-token'),
+            client: sessionStorage.getItem('client'),
+            expiry: sessionStorage.getItem('expiry'),
+            uid: sessionStorage.getItem('uid'),
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        const channelDetails = response.data;
+        console.log('Channel details:', channelDetails);
+        setUserReceiver(value);
+        setReceiverClass('Channel');
+        setReceiverExists('exists');
+        // Handle channel details
+      } else {
+        throw new Error('Failed to get channel details');
+      }
+    } catch (error) {
+      console.error('Failed to get channel details:', error);
+      // Handle error
     }
   };
 
@@ -58,12 +88,28 @@ function DirectMessagesHeader(props) {
 
   const handleCheckSubmit = (event) => {
     event.preventDefault();
-    const value = event.target.value;
-    checkUserExists(value);
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const value = inputValue;
+
+    if (emailPattern.test(value)) {
+      // Reset channel-related states
+      setReceiverExists(false);
+      setUserReceiver(null);
+      // Check user existence
+      checkUserExists(value);
+    } else {
+      setUserReceiver(null);
+      // Check channel existence
+      checkChannelExists(value);
+    }
   };
+
   useEffect(() => {
     console.log('userReceiver:', userReceiver);
-  }, [userReceiver]);
+    console.log('receiverClass:', receiverClass);
+  }, [userReceiver, receiverClass]);
+
   return (
     <>
       <div className="dm-header">
@@ -83,7 +129,7 @@ function DirectMessagesHeader(props) {
         </form>
         {showModal && (
           <div className="to-modal">
-            {userExists ? <p>User exists!</p> : <div>...</div>}
+            {receiverExists ? <p>Receiver exists!</p> : <div>...</div>}
           </div>
         )}
       </div>

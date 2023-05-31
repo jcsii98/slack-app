@@ -2,6 +2,7 @@ import DirectMessagesHeader from './DirectMessagesHeader.jsx';
 import Channels from './Channels.jsx';
 import { useState, useEffect } from 'react';
 function Chat() {
+  const [receiverClass, setReceiverClass] = useState('');
   // message = receiver_id, receiver_class, body
   const [userReceiver, setUserReceiver] = useState('');
   const [message, setMessage] = useState('');
@@ -9,7 +10,9 @@ function Chat() {
   const sendMessage = async () => {
     const url = 'http://206.189.91.54/api/v1/messages';
     const receiverId = userReceiver;
-    const receiverClass = 'User';
+    const receiverClass2 = receiverClass;
+    console.log('receiverId:', receiverId);
+    console.log('receiverClass:', receiverClass2);
 
     const headers = {
       'Content-Type': 'application/json',
@@ -21,7 +24,7 @@ function Chat() {
 
     const requestBody = {
       receiver_id: receiverId,
-      receiver_class: receiverClass,
+      receiver_class: receiverClass2,
       body: message,
     };
 
@@ -47,6 +50,7 @@ function Chat() {
       console.error('Error:', error);
     }
   };
+
   const handleChatSubmit = (event) => {
     event.preventDefault();
     const value = event.target.value;
@@ -59,6 +63,8 @@ function Chat() {
         <DirectMessagesHeader
           userReceiver={userReceiver}
           setUserReceiver={setUserReceiver}
+          receiverClass={receiverClass}
+          setReceiverClass={setReceiverClass}
         />
         <div className="messages-container"></div>
         <div className="chat-footer">
