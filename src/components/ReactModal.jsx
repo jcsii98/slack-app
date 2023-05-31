@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import { useEffect, useState } from 'react';
 
 export default function ReactModal(props) {
-  const { client,loggedUser,setCreateChannelIsSuccess,onHide,show } = props
+  const { client,loggedUser,setCreateChannelIsSuccess,onHide,show,setReceiverData,setCurrentMessagedId,setReceiverClass,setConversation } = props
   const [newChannelName,setNewChannelName] = useState("")
   const [addMemberList,setAddMemberList] = useState([{ id:loggedUser.id, email:loggedUser.email }])
   const [addMemberInput,setAddMemberInput] = useState("")
@@ -31,6 +31,10 @@ export default function ReactModal(props) {
             console.log("name taken!")
           } else {
             setCreateChannelIsSuccess(true)
+            setReceiverData(response.data.data)
+            setCurrentMessagedId(response.data.data.id)
+            setReceiverClass("Channel")
+            setConversation([])
           }
           console.log(response)
       } catch (error) {

@@ -98,7 +98,7 @@ function Chat(props) {
         setReceiverClass={setReceiverClass}
       />}
       <Message conversation={conversation}/>
-      <div className="container-fluid rounded-4 border border-dark d-flex flex-column px-3 py-2" style={{height: "18%"}}>
+      <div className="container-fluid rounded-4 border border-dark d-flex flex-column px-3 py-2" style={{height: "18%", marginTop: "auto"}}>
         <div className="d-flex border-bottom gap-3 pb-1" style={{fontSize: "1.2rem"}}>
           <i className="bi bi-type-bold"></i>
           <i className="bi bi-type-italic"></i>

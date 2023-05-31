@@ -30,7 +30,7 @@ function Homepage(props) {
     <>
       {isLoggedIn ? (
         <div className='container-fluid d-flex flex-column h-100 p-0'>
-          <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+          <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} loggedUser={loggedUser}/>
           <DashPage
             email={email}
             setEmail={setEmail}

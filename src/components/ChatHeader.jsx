@@ -1,5 +1,12 @@
 function ChatHeader(props) {
-  const { receiverData,currentMessagedId } = props
+  const { client,receiverData,currentMessagedId } = props
+
+  const seeMembers = async () => {
+    console.log(receiverData.id)
+    const response = await client.get(`/channels/${receiverData.id}`)
+    console.log(response)
+    console.log(response.data.data)
+  }
 
   return (
     <div className="container-fluid bg-white d-flex align-items-center border">
@@ -11,7 +18,7 @@ function ChatHeader(props) {
           :
           <div className='container-fluid d-flex align-items-center' style={{fontSize: "1.5rem", fontWeight: "bold", height: "4rem"}}>New Message</div>
       }
-      <div className="p-3" style={{marginLeft: "auto"}}>Members</div>
+      <div className="p-3" style={{marginLeft: "auto"}} onClick={seeMembers}>Members</div>
     </div>
   );
 }

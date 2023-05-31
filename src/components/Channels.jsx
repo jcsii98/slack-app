@@ -41,6 +41,10 @@ export default function Channels(props) {
         setCreateChannelIsSuccess={setCreateChannelIsSuccess}
         show={modalShow}
         onHide={() => setModalShow(false)}
+        setReceiverData={setReceiverData}
+        setCurrentMessagedId={setCurrentMessagedId}
+        setConversation={setConversation}
+        setReceiverClass={setReceiverClass}
       />
       {data && 
         <List
