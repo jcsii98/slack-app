@@ -12,8 +12,10 @@ function Header(props) {
       </div>
       {isLoggedIn && (
         <>
-          <form className="container-form"></form>
-          <div className='d-flex justify-content-center align-items-center gap-2'>
+          <form class="container-fluid d-flex justify-content-center align-items-center gap-2" style={{marginLeft: "10rem", marginRight: "5rem"}}>
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
+          </form>
+          <div className='d-flex justify-content-center align-items-center gap-2' style={{marginLeft: "auto"}}>
             <i className="bi bi-person-circle" style={{fontSize: "1.7rem", color: "white"}}/>
             <div style={{color: "white"}}>{loggedUser.email}</div>
           </div>
