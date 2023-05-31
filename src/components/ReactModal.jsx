@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function ReactModal(props) {
   const { client,loggedUser,setCreateChannelIsSuccess,onHide,show } = props
@@ -12,15 +12,19 @@ export default function ReactModal(props) {
 
   const [isLoading,setIsLoading] = useState(false)
 
+  useEffect(() => {
+    setAddMemberList(addMemberList)
+  },[isLoading])
+
   const handleSubmit = (e) => {
     e.preventDefault()
     const createChannel = async () => {
+      console.log("creating new channel...")
+      console.log(addMemberList)
       try {
           const response = await client.post(`/channels`, {
               "name": newChannelName,
-              "user_ids": addMemberList.map( member => {
-                member.id
-              })
+              "user_ids": addMemberList.map( member => member.id)
           })
 
           if(response.data?.errors?.length === 1) {
@@ -62,8 +66,7 @@ export default function ReactModal(props) {
       const userIsFound = await checkIfUserExists()
       
       if(userIsFound) {
-        console.log("user exists!")
-        setAddMemberList([...addMemberList, {id: crypto.randomUUID(), email: addMemberInput}])
+        setAddMemberList([...addMemberList, {id: userIsFound.id, email: addMemberInput}])
       } else {
         console.log("user does not exist!")
       }

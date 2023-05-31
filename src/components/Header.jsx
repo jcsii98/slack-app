@@ -6,28 +6,26 @@ function Header(props) {
     sessionStorage.clear();
   };
   return (
-    <>
-      <div className="navbar-container">
-        <nav className="navbar bg-body-tertiary">
-          <img className="header-logo" src={Logo} />
-          {isLoggedIn && (
-            <>
-              <form className="container-form"></form>
-              <div className="header-button">
-                {' '}
-                <button
-                  type="button"
-                  className="btn btn-link"
-                  onClick={buttonClick}
-                >
-                  Log out
-                </button>
-              </div>
-            </>
-          )}
-        </nav>
+    <div className="container-fluid d-flex justify-content-center align-items-center p-3" style={{maxHeight: "5%"}}>
+      <div style={{maxWidth: "5%"}}>
+        <img src={Logo} style={{backgroundSize: "contain",width: "100%"}}/>
       </div>
-    </>
+      {isLoggedIn && (
+        <>
+          <form className="container-form"></form>
+          <div className="" style={{width: "8%"}}>
+            <button
+              className='bg-transparent'
+              style={{color: "white"}}
+              type="button"
+              onClick={buttonClick}
+            >
+              Log out
+            </button>
+          </div>
+        </>
+      )}
+    </div>
   );
 }
 

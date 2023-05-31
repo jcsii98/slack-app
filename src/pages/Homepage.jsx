@@ -14,10 +14,22 @@ function Homepage(props) {
    uid:""
   })
 
+  // const [ config,setConfig ] = useState({ 
+  //   accessToken: localStorage.getItem("access-token") ?? "",
+  //   client: localStorage.getItem("client") ?? "",
+  //   expiry: localStorage.getItem("expiry") ?? "",
+  //   uid: localStorage.getItem("uid") ?? ""
+  // })
+
+  useEffect(() => {
+    console.log("logged user data: ")
+    console.log(loggedUser)
+  },[loggedUser])
+
   return (
     <>
       {isLoggedIn ? (
-        <>
+        <div className='container-fluid d-flex flex-column h-100 p-0'>
           <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
           <DashPage
             email={email}
@@ -28,7 +40,7 @@ function Homepage(props) {
             setConfig={setConfig}
             loggedUser={loggedUser}
           />
-        </>
+        </div>
       ) : (
         <CredentialsPage
           email={email}

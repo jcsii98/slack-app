@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function CredentialsPage(props) {
-  const { setIsLoggedIn, isLoggedIn, email, setEmail } = props;
+  const { setIsLoggedIn,setConfig,setLoggedUser } = props;
   const [credentialsLabel, setCredentialsLabel] = useState('Login');
   const [confirmPasswordShow, setConfirmPasswordShow] = useState(false);
   const [submitFunction, setSubmitFunction] = useState(false);
@@ -11,9 +11,6 @@ function CredentialsPage(props) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-
-  const { setConfig } = props;
-  const { loggedUser, setLoggedUser } = props;
 
   const showSignup = () => {
     if (credentialsLabel === 'Login') {
@@ -62,10 +59,10 @@ function CredentialsPage(props) {
           localStorage.setItem("contacts", JSON.stringify([ { userId: userData.id, contacts: [] } ]))
         }
         
-        sessionStorage.setItem('access-token', response.headers['access-token']);
-        sessionStorage.setItem('client', response.headers['client']);
-        sessionStorage.setItem('expiry', response.headers['expiry']);
-        sessionStorage.setItem('uid', response.headers['uid']);
+        localStorage.setItem('access-token', response.headers['access-token']);
+        localStorage.setItem('client', response.headers['client']);
+        localStorage.setItem('expiry', response.headers['expiry']);
+        localStorage.setItem('uid', response.headers['uid']);
       } else {
         setError('Invalid username or password. Please try again.'); // Set the error state
       }

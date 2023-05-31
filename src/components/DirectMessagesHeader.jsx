@@ -1,24 +1,22 @@
 import { useState } from 'react';
 
 function DirectMessagesHeader(props) {
-  const { client,setReceiverData } = props;
-  const [inputValue, setInputValue] = useState('');
-  const [userExists, setUserExists] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const { client,setReceiverData,receiverClass, setReceiverClass } = props;
+  const [ inputValue,setInputValue ] = useState('');
+  const [ showModal,setShowModal ] = useState(false);
+  const [ userExists,setUserExits ] = useState(false)
 
   const checkUserExists = async () => {
     try {
       const response = await client.get("/users")
-      console.log(response)
+
       const users = response.data.data;
       const exists = users.some((user) => user.uid === inputValue);
 
-      setUserExists(exists);
-
       if (exists) {
         const userData = users.find((user) => user.uid === inputValue);
-        console.log('User data:', userData);
         setReceiverData(userData)
+        setReceiverClass('User')
       } else {
         console.log('User does not exist');
         setReceiverData()
@@ -27,6 +25,39 @@ function DirectMessagesHeader(props) {
       console.error('Failed to retrieve user:', error);
     }
   };
+
+  const checkChannelExists = async (value) => {
+    try {
+      const response = await client.get("/channels")
+
+      if (response.status === 200) {
+        const channels = response.data.data; // Access the "data" field of the response
+
+        console.log('Channels:', channels); // Log channels to inspect its structure
+
+        const channelExists = channels.some(
+          (channel) => channel.name === value
+        );
+
+        if (channelExists) {
+          console.log(`Channel with name '${value}' exists`);
+          const channelData = channels.find(
+            (channel) => channel.name === value
+          );
+          setReceiverData(channelData);
+          setReceiverClass('Channel');
+        } else {
+          console.log(`Channel with name '${value}' does not exist`);
+        }
+      } else {
+        throw new Error('Failed to get channels');
+      }
+    } catch (error) {
+      console.error('Failed to get channels:', error);
+      // Handle error
+    }
+  };
+
 
   const handleFocus = () => {
     if (inputValue.trim() !== '') {
@@ -48,33 +79,39 @@ function DirectMessagesHeader(props) {
 
   const handleCheckSubmit = (event) => {
     event.preventDefault();
-    const value = event.target.value;
-    checkUserExists(value);
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const value = inputValue;
+
+    if (emailPattern.test(value)) {
+      console.log("USER")
+      checkUserExists(value);
+    } else {
+      console.log("CHANNEL")
+      checkChannelExists(value);
+    }
   };
   return (
-    <>
-      <div className="dm-header">
-        <form onSubmit={handleCheckSubmit} className="dm-form">
-          <div className="input-field">
-            <span className="prefix">To: </span>
-            <input
-              onChange={handleChange}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              className="dmstyles"
-              type="text"
-              placeholder="@somebody or somebody@example.com"
-              value={inputValue}
-            />
-          </div>
-        </form>
-        {showModal && (
-          <div className="to-modal">
-            {userExists ? <p>User exists!</p> : <div>...</div>}
-          </div>
-        )}
-      </div>
-    </>
+    <div className="dm-header">
+      <form onSubmit={handleCheckSubmit} className="dm-form">
+        <div className="input-field">
+          <span className="prefix">To: </span>
+          <input
+            onChange={handleChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            className="dmstyles"
+            type="text"
+            placeholder="@somebody or somebody@example.com"
+            value={inputValue}
+          />
+        </div>
+      </form>
+      {showModal && (
+        <div className="to-modal">
+          {userExists ? <p>User exists!</p> : <div>...</div>}
+        </div>
+      )}
+    </div>
   );
 }
 

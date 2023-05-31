@@ -1,84 +1,18 @@
-function ChatHeader() {
-  return (
-    <>
-      <ul className="horizontal-nav nav-tabs">
-        <li className="nav-item dropdown">
-          <a
-            className="nav-link dropdown-toggle"
-            href="#"
-            role="button"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            {/* Chatbox Label */}
-            Batch 28
-          </a>
-          <ul className="dropdown-menu">
-            <li>
-              <a className="dropdown-item" href="#">
-                Action
-              </a>
-            </li>
-            <li>
-              <a className="dropdown-item" href="#">
-                Another action
-              </a>
-            </li>
-            <li>
-              <a className="dropdown-item" href="#">
-                Something else here
-              </a>
-            </li>
-            <li>
-              <hr className="dropdown-divider" />
-            </li>
-            <li>
-              <a className="dropdown-item" href="#">
-                Separated link
-              </a>
-            </li>
-          </ul>
-        </li>
+function ChatHeader(props) {
+  const { receiverData,currentMessagedId } = props
 
-        {/* if receiver is of class channel */}
-        <li className="nav-item dropdown">
-          <a
-            className="nav-link dropdown-toggle"
-            data-bs-toggle="dropdown"
-            href="#"
-            role="button"
-            aria-expanded="false"
-          >
-            Members
-          </a>
-          <ul className="dropdown-menu">
-            <li>
-              <a className="dropdown-item" href="#">
-                Action
-              </a>
-            </li>
-            <li>
-              <a className="dropdown-item" href="#">
-                Another action
-              </a>
-            </li>
-            <li>
-              <a className="dropdown-item" href="#">
-                Something else here
-              </a>
-            </li>
-            <li>
-              <hr className="dropdown-divider" />
-            </li>
-            <li>
-              <a className="dropdown-item" href="#">
-                Separated link
-              </a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </>
+  return (
+    <div className="container-fluid bg-white d-flex align-items-center border">
+      { currentMessagedId ?
+          <div className='container-fluid bg-white d-flex align-items-center' style={{height: "4rem"}}>
+            <i className="bi bi-person-circle p-3" style={{fontSize: "2.5rem"}}></i>
+            <div style={{fontSize: "1.5rem", fontWeight: "bold"}}>{receiverData.name}</div>
+          </div>
+          :
+          <div className='container-fluid d-flex align-items-center' style={{fontSize: "1.5rem", fontWeight: "bold", height: "4rem"}}>New Message</div>
+      }
+      <div className="p-3" style={{marginLeft: "auto"}}>Members</div>
+    </div>
   );
 }
 
