@@ -1,15 +1,100 @@
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+import { useEffect, useRef, useState } from 'react';
+
 function ChatHeader(props) {
-  const { client,receiverData,currentMessagedId } = props
+  const { client,receiverData,currentMessagedId,receiverClass } = props
+  const [ modalShow, setModalShow ] = useState(false);
+  const [ channelMembers,setChannelMembers ] = useState([])
+  const inputValueRef = useRef("")
+
+  useEffect(() => {
+    setChannelMembers(channelMembers)
+  }, [modalShow])
 
   const seeMembers = async () => {
     console.log(receiverData.id)
     const response = await client.get(`/channels/${receiverData.id}`)
     console.log(response)
     console.log(response.data.data)
+    const res = await client.get('/users')
+    const allUsers = res.data.data
+    const rawMembersData = response.data.data.channel_members
+    console.log(rawMembersData)
+    const rawMembersId = rawMembersData.map( member => member.user_id)
+    const membersData = rawMembersId.map( id => {
+      return allUsers.find( user => user.id === id )
+    })
+    console.log(membersData)
+    setChannelMembers(membersData)
+    setModalShow(true)
   }
 
+  const addMember = async () => {
+    console.log(inputValueRef.current)
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (emailPattern.test(inputValueRef.current)) {
+      try {
+        const res = await client.get("/users")
+
+        const users = res.data.data;
+        const userData = users.find((user) => user.email === inputValueRef.current);
+
+
+        const response = await client.post("/channel/add_member",{
+        "id": currentMessagedId,
+        "member_id": userData.id
+        })
+        console.log(response)
+      } catch (error) {
+        console.log(error)
+      }
+    } else {
+      console.log("NOT AN EMAIL!")
+    }
+  }
+
+  const handleChange = (event) => {
+    const value = event.target.value;
+    console.log(value)
+    inputValueRef.current = value
+  };
+
   return (
-    <div className="container-fluid bg-white d-flex align-items-center border">
+    <>
+      <Modal
+        show={modalShow}
+        size="md"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Members
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body className='d-flex flex-column gap-4'>
+        <div className='container-fluid d-flex p-0 gap-2'>
+          <input className='flex-grow-1' type="text" onChange={handleChange}></input>
+          <button onClick={addMember}>Add</button>
+        </div>
+        <ul className='d-flex flex-column justify-content-center align-items-start px-1 gap-3'>
+          {channelMembers.map( member => {
+            return (
+              <li key={member.id} className='d-flex justify-content-center align-items-center gap-2'>
+                <i className="bi bi-person-circle" style={{fontSize: "2rem"}}></i>
+                <div style={{fontSize: "2rem"}}>{member.email}</div>
+              </li>
+            )
+          })}
+        </ul>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={() => setModalShow(false)}>Close</Button>
+      </Modal.Footer>
+     </Modal>
+     <div className="container-fluid bg-white d-flex align-items-center border">
       { currentMessagedId ?
           <div className='container-fluid bg-white d-flex align-items-center' style={{height: "4rem"}}>
             <i className="bi bi-person-circle p-3" style={{fontSize: "2.5rem"}}></i>
@@ -18,8 +103,9 @@ function ChatHeader(props) {
           :
           <div className='container-fluid d-flex align-items-center' style={{fontSize: "1.5rem", fontWeight: "bold", height: "4rem"}}>New Message</div>
       }
-      <div className="p-3" style={{marginLeft: "auto"}} onClick={seeMembers}>Members</div>
+      { receiverClass === "Channel" && <div className="p-3" style={{marginLeft: "auto",cursor: "pointer"}} onClick={seeMembers}>Members</div>}
     </div>
+    </>
   );
 }
 

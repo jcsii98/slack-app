@@ -10,12 +10,14 @@ export default function DirectMessages(props) {
     setConversation,
     currentMessagedId,
     setCurrentMessagedId,
-    receiverData,
     setReceiverData,
-    receiverClass } = props
+    receiverClass,
+    setReceiverClass } = props
   const [ data,setData ] = useState([])
 
   useEffect(() => {
+    console.log("###################################################")
+    console.log("in direct messages...")
     const getData = () => {
       setData(() => {
         const localUserContact = contacts.find( data => {
@@ -25,18 +27,15 @@ export default function DirectMessages(props) {
       })
     }
     getData()
-    console.log("current message success: ")
-    console.log(messageSuccess)
-    console.log("current messaged id: ")
-    console.log(currentMessagedId)
-    if(currentMessagedId && receiverClass !== "Channel") handleClick(currentMessagedId)
+    if(currentMessagedId && receiverClass !== "Channel") userClick(currentMessagedId)
   },[messageSuccess])
 
-  const handleClick = async (id) => {
+  const userClick = async (id) => {
     console.log("current messaged id: " + id)
     setCurrentMessagedId(id)
     const response = await client.get(`/messages?receiver_id=${id}&receiver_class=User`)
     console.log(response)
+    setReceiverClass("User")
     const userReceiver = response.data.data[0].receiver
     setReceiverData({ id: userReceiver.id, name: userReceiver.email })
     setConversation(Array.from(response.data.data))
@@ -44,7 +43,7 @@ export default function DirectMessages(props) {
 
   return (
     <div className="container-fluid p-0 nav-tabs">
-      {data && <List handleClick={handleClick} setConversation={setConversation} client={client} title={"Direct Messages"} classType={"d-none"} data={data}/>}
+      {data && <List handleClick={userClick} setConversation={setConversation} client={client} title={"Direct Messages"} classType={"d-none"} data={data}/>}
     </div>
   );
 }

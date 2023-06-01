@@ -5,12 +5,12 @@ import { useEffect, useState } from 'react';
 
 export default function ReactModal(props) {
   const { client,loggedUser,setCreateChannelIsSuccess,onHide,show,setReceiverData,setCurrentMessagedId,setReceiverClass,setConversation } = props
-  const [newChannelName,setNewChannelName] = useState("")
-  const [addMemberList,setAddMemberList] = useState([{ id:loggedUser.id, email:loggedUser.email }])
-  const [addMemberInput,setAddMemberInput] = useState("")
+  const [ newChannelName,setNewChannelName ] = useState("")
+  const [ addMemberList,setAddMemberList ] = useState([{ id:loggedUser.id, email:loggedUser.email }])
+  const [ addMemberInput,setAddMemberInput ] = useState("")
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
-  const [isLoading,setIsLoading] = useState(false)
+  const [ isLoading,setIsLoading ] = useState(false)
 
   useEffect(() => {
     setAddMemberList(addMemberList)

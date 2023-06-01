@@ -126,6 +126,7 @@ export default function Sidebar(props) {
             receiverData={receiverData}
             setReceiverData={setReceiverData}
             receiverClass={receiverClass}
+            setReceiverClass={setReceiverClass}
           />
           {/* <button onClick={testClick}>Test</button> */}
         </div>

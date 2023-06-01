@@ -1,12 +1,13 @@
 import List from "./List"
 import ReactModal from "../components/ReactModal"
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Channels(props) {
   const { client,loggedUser,setConversation,currentMessagedId,messageSuccess,receiverClass,setReceiverData,setReceiverClass,setCurrentMessagedId } = props
   const [ modalShow, setModalShow ] = useState(false);
   const [ data,setData ] = useState([])
   const [ createChannelIsSuccess, setCreateChannelIsSuccess ] = useState(false)
+  const mountedRef = useRef(false)
 
   useEffect(() => {
     const getData = async () => {
@@ -16,11 +17,17 @@ export default function Channels(props) {
         return response.data.data ?? []
       })
     }
-    if(receiverClass === "Channel") handleClick(currentMessagedId)
-    getData()
+    if(receiverClass === "Channel") {
+      channelClick(currentMessagedId)
+      getData()
+    }
+    if(!mountedRef.current) {
+      getData()
+      mountedRef.current = true
+    }
   },[createChannelIsSuccess,messageSuccess])
 
-  const handleClick = async (id) => {
+  const channelClick = async (id) => {
     const res = await client.get(`/channels/${id}`)
     setReceiverData(res.data.data)
     setReceiverClass("Channel")
@@ -48,7 +55,7 @@ export default function Channels(props) {
       />
       {data && 
         <List
-          handleClick={handleClick}
+          handleClick={channelClick}
           setConversation={setConversation}
           client={client}
           title={"Channels"}

@@ -3,7 +3,10 @@ function Header(props) {
   const { setIsLoggedIn, isLoggedIn,loggedUser } = props;
   const buttonClick = () => {
     setIsLoggedIn(false);
-    sessionStorage.clear();
+    localStorage.removeItem('access-token');
+    localStorage.removeItem('client');
+    localStorage.removeItem('expiry');
+    localStorage.removeItem('uid');
   };
   return (
     <div className="container-fluid d-flex justify-content-center align-items-center" style={{maxHeight: "5%", padding: "1em 0 1em 1em"}}>
@@ -12,8 +15,8 @@ function Header(props) {
       </div>
       {isLoggedIn && (
         <>
-          <form class="container-fluid d-flex justify-content-center align-items-center gap-2" style={{marginLeft: "10rem", marginRight: "5rem"}}>
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
+          <form className="container-fluid d-flex justify-content-center align-items-center gap-2" style={{marginLeft: "10rem", marginRight: "5rem"}}>
+            <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
           </form>
           <div className='d-flex justify-content-center align-items-center gap-2' style={{marginLeft: "auto"}}>
             <i className="bi bi-person-circle" style={{fontSize: "1.7rem", color: "white"}}/>

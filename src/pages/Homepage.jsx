@@ -2,6 +2,8 @@ import CredentialsPage from './CredentialsPage.jsx';
 import Header from '../components/Header.jsx';
 import { useEffect, useState } from 'react';
 import DashPage from './DashPage.jsx';
+import api from '../pages/api.js';
+
 function Homepage(props) {
   const { isLoggedIn, setIsLoggedIn } = props;
   const [email, setEmail] = useState('');
@@ -14,17 +16,44 @@ function Homepage(props) {
    uid:""
   })
 
-  // const [ config,setConfig ] = useState({ 
-  //   accessToken: localStorage.getItem("access-token") ?? "",
-  //   client: localStorage.getItem("client") ?? "",
-  //   expiry: localStorage.getItem("expiry") ?? "",
-  //   uid: localStorage.getItem("uid") ?? ""
-  // })
+  useEffect(() => {
+    setConfig(config)
+  },[isLoggedIn])
 
   useEffect(() => {
-    console.log("logged user data: ")
-    console.log(loggedUser)
-  },[loggedUser])
+    const accessToken = localStorage.getItem('access-token');
+    const client = localStorage.getItem('client');
+    const expiry = localStorage.getItem('expiry');
+    const uid = localStorage.getItem('uid');
+
+    if (accessToken && client && expiry && uid) {
+      api.defaults.headers.common['access-token'] = accessToken;
+      api.defaults.headers.common.client = client;
+      api.defaults.headers.common.expiry = expiry;
+      api.defaults.headers.common.uid = uid;
+
+      api
+        .get('http://206.189.91.54/api/v1/auth/validate_token')
+        .then((response) => {
+          setLoggedUser(response.data.data);
+          setConfig({
+            accessToken: accessToken,
+            client: client,
+            expiry: expiry,
+            uid: uid
+          })
+          setIsLoggedIn(true);
+        })
+        .catch((error) => {
+          console.error(error);
+          setIsLoggedIn(false);
+          setLoggedUser(null);
+        });
+    } else {
+      setIsLoggedIn(false);
+      setLoggedUser(null);
+    }
+  }, []);
 
   return (
     <>

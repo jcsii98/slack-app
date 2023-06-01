@@ -46,6 +46,10 @@ function Chat(props) {
   }, [currentMessagedId])
 
   const sendMessage = async () => {
+    console.log("###################################################")
+    console.log("sending message...")
+    console.log(receiverData)
+    console.log(receiverClass)
     setMessageSuccess(false)
     try {
       const response = await client.post("/messages", {
@@ -54,6 +58,8 @@ function Chat(props) {
         body: message
       })
       if (response.statusText === "OK") {
+        console.log("message response: ")
+        console.log(response.data)
         setMessage('');
         if(receiverClass === "User") {
           setContacts(() => {
@@ -125,7 +131,7 @@ function Chat(props) {
           />
         </form>
         <div className="d-flex justify-content-end px-3">
-          <i class="bi bi-send-fill" style={{rotate: "45deg"}} onClick={handleChatSubmit}></i>
+          <i className="bi bi-send-fill" style={{rotate: "45deg"}} onClick={handleChatSubmit}></i>
         </div>
       </div>
     </div>
