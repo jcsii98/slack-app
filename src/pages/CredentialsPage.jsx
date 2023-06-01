@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function CredentialsPage(props) {
-  const { setIsLoggedIn, isLoggedIn, email, setEmail } = props;
+  const { setIsLoggedIn, setConfig, setLoggedUser } = props;
   const [credentialsLabel, setCredentialsLabel] = useState('Login');
   const [confirmPasswordShow, setConfirmPasswordShow] = useState(false);
   const [submitFunction, setSubmitFunction] = useState(false);
@@ -12,21 +12,15 @@ function CredentialsPage(props) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    console.log(isLoggedIn);
-  }, [isLoggedIn]);
-
   const showSignup = () => {
     if (credentialsLabel === 'Login') {
       setCredentialsLabel('Signup');
       setConfirmPasswordShow(true);
       setSubmitFunction(true);
-      console.log('signup');
     } else {
       setCredentialsLabel('Login');
       setConfirmPasswordShow(false);
       setSubmitFunction(false);
-      console.log('login');
     }
   };
 
@@ -39,24 +33,45 @@ function CredentialsPage(props) {
           password: password,
         }
       );
-      console.log(response.data);
-      // Check if the response indicates a successful login
+      const userData = response.data.data;
+
       if (response.status === 200) {
+        // Store authentication headers in localStorage
+        localStorage.setItem('access-token', response.headers['access-token']);
+        localStorage.setItem('client', response.headers.client);
+        localStorage.setItem('expiry', response.headers.expiry);
+        localStorage.setItem('uid', response.headers.uid);
+
         setIsLoggedIn(true);
-        console.log('user is logged in', email);
-        sessionStorage.setItem(
-          'access-token',
-          response.headers['access-token']
-        );
-        sessionStorage.setItem('client', response.headers['client']);
-        sessionStorage.setItem('expiry', response.headers['expiry']);
-        sessionStorage.setItem('uid', response.headers['uid']);
+        setLoggedUser({ ...userData });
+
+        let localContacts = JSON.parse(localStorage.getItem('contacts'));
+
+        if (localContacts) {
+          const userContacts = localContacts.find((data) => {
+            return data.userId === userData.id;
+          });
+          if (!userContacts) {
+            localStorage.setItem(
+              'contacts',
+              JSON.stringify([
+                ...localContacts,
+                { userId: userData.id, contacts: [] },
+              ])
+            );
+          }
+        } else {
+          localStorage.setItem(
+            'contacts',
+            JSON.stringify([{ userId: userData.id, contacts: [] }])
+          );
+        }
       } else {
         setError('Invalid username or password. Please try again.'); // Set the error state
       }
     } catch (error) {
       console.error(error);
-      setError('An error has occured. Please try again.'); // Set the error state
+      setError('An error has occurred. Please try again.'); // Set the error state
     }
   }
 
@@ -67,7 +82,6 @@ function CredentialsPage(props) {
         password: password,
         password_confirmation: confirmPassword,
       });
-      console.log(response.data);
     } catch (error) {
       console.error(error);
       setError('User already exists. Please try again.'); // Set the error state
@@ -92,7 +106,7 @@ function CredentialsPage(props) {
             <div className="mb-3 main-form">
               <CredentialsInput
                 name="username"
-                type="text"
+                type="email"
                 label="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}

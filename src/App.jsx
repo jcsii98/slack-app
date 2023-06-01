@@ -2,8 +2,16 @@ import Homepage from './pages/Homepage';
 import { useState } from 'react';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  console.log(isLoggedIn);
-  return <Homepage isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />;
+  const [loggedUser, setLoggedUser] = useState(null);
+
+  return (
+    <Homepage
+      loggedUser={loggedUser}
+      setLoggedUser={setLoggedUser}
+      isLoggedIn={isLoggedIn}
+      setIsLoggedIn={setIsLoggedIn}
+    />
+  );
 }
 
 export default App;

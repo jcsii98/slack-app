@@ -13,8 +13,8 @@ DashPage.js
 jose.saribong@email.com test
 
 
-ChatHeader.jsx
-channel && members button 
+API doesnt have sender_id 
 
-Chat.jsx
-directMessages && DirectMessagesHeader
+----
+suggestion/s:
+-export default can be directly put on the first function declaration

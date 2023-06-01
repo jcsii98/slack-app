@@ -1,50 +1,91 @@
-import DirectMessagesHeader from './DirectMessagesHeader.jsx';
-import Channels from './Channels.jsx';
-import { useState, useEffect } from 'react';
-function Chat() {
-  const [receiverClass, setReceiverClass] = useState('');
+import DirectMessagesHeader from './DirectMessagesHeader';
+import Message from './Message';
+import { useEffect, useRef, useState } from 'react';
+import api from '../api.js';
+
+function Chat(props) {
+  const {
+    conversation,
+    client,
+    loggedUser,
+    setContacts,
+    setMessageSuccess,
+    currentMessagedId,
+    setCurrentMessagedId,
+    receiverData,
+    setReceiverData,
+    receiverClass,
+    setReceiverClass,
+  } = props;
+
   // message = receiver_id, receiver_class, body
-  const [userReceiver, setUserReceiver] = useState('');
   const [message, setMessage] = useState('');
 
+  const firstMountRef = useRef(true);
+
+  useEffect(() => {
+    console.log('###################################################');
+    console.log('in chat component..');
+    console.log('current messaged id: ' + currentMessagedId);
+    console.log('receiver data: ');
+    console.log(receiverData);
+    const updateReceiver = async () => {
+      try {
+        const response = await api.get('/users');
+        const users = response.data.data;
+        const userData = users.find((user) => user.id === currentMessagedId);
+        setReceiverData({ id: userData.id, name: userData.email });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (!firstMountRef) {
+      if (receiverClass !== 'Channel') {
+        updateReceiver();
+      }
+    }
+    firstMountRef.current = true;
+  }, [currentMessagedId]);
+
   const sendMessage = async () => {
-    const url = 'http://206.189.91.54/api/v1/messages';
-    const receiverId = userReceiver;
-    const receiverClass2 = receiverClass;
-    console.log('receiverId:', receiverId);
-    console.log('receiverClass:', receiverClass2);
-
-    const headers = {
-      'Content-Type': 'application/json',
-      'access-token': sessionStorage.getItem('access-token'),
-      client: sessionStorage.getItem('client'),
-      expiry: sessionStorage.getItem('expiry'),
-      uid: sessionStorage.getItem('uid'),
-    };
-
-    const requestBody = {
-      receiver_id: receiverId,
-      receiver_class: receiverClass2,
-      body: message,
-    };
-
+    setMessageSuccess(false);
     try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(requestBody),
+      const response = await api.post('/messages', {
+        receiver_id: receiverData.id,
+        receiver_class: receiverClass,
+        body: message,
       });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log('Message sent!');
-
+      if (response.statusText === 'OK') {
         setMessage('');
-        console.log('Response:', data);
+        if (receiverClass === 'User') {
+          setContacts(() => {
+            const localContacts = JSON.parse(localStorage.getItem('contacts'));
+
+            const updatedLocalContacts = localContacts.map((contactData) => {
+              if (contactData.userId === loggedUser.id) {
+                const bool = contactData.contacts.find((data) => {
+                  return data.id === receiverData.id;
+                });
+                if (!bool) {
+                  contactData.contacts = [
+                    ...contactData.contacts,
+                    { id: receiverData.id, name: receiverData.email },
+                  ];
+                }
+              }
+              return contactData;
+            });
+            localStorage.setItem(
+              'contacts',
+              JSON.stringify(updatedLocalContacts)
+            );
+            return updatedLocalContacts;
+          });
+        }
+        await setCurrentMessagedId(receiverData.id);
+        setMessageSuccess(true);
       } else {
         console.error('Failed to send message');
-        console.log('Error:', data);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -53,40 +94,59 @@ function Chat() {
 
   const handleChatSubmit = (event) => {
     event.preventDefault();
-    const value = event.target.value;
-    sendMessage(value);
+    sendMessage();
   };
 
   return (
-    <>
-      <div className="chat-main-container">
+    <div className="container-fluid h-100 mh-100 p-2 bg-white d-flex flex-column gap-2">
+      {currentMessagedId ? null : (
         <DirectMessagesHeader
-          userReceiver={userReceiver}
-          setUserReceiver={setUserReceiver}
+          client={client}
+          setReceiverData={setReceiverData}
           receiverClass={receiverClass}
           setReceiverClass={setReceiverClass}
         />
-        <div className="messages-container"></div>
-        <div className="chat-footer">
-          <div className="chat-input-container">
-            <div className="chat-input-header">chat symbols here</div>
-            <div className="chat-input-form-container">
-              <form onSubmit={handleChatSubmit} className="chat-input-form">
-                <input
-                  placeholder="Type a message..."
-                  type="text"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                />
-              </form>
-            </div>
-            <div className="chat-input-footer">
-              <button type="button"></button>
-            </div>
-          </div>
+      )}
+      <Message conversation={conversation} />
+      <div
+        className="container-fluid rounded-4 border border-dark d-flex flex-column px-3 py-2"
+        style={{ height: '18%', marginTop: 'auto' }}
+      >
+        <div
+          className="d-flex border-bottom gap-3 pb-1"
+          style={{ fontSize: '1.2rem' }}
+        >
+          <i className="bi bi-type-bold"></i>
+          <i className="bi bi-type-italic"></i>
+          <i className="bi bi-type-strikethrough"></i>|
+          <i className="bi bi-link-45deg"></i>|<i className="bi bi-list-ol"></i>
+          <i className="bi bi-list-ul"></i>|
+          <i className="bi bi-blockquote-left"></i>|
+          <i className="bi bi-code-slash"></i>
+          <i className="bi bi-file-earmark-code"></i>
+        </div>
+        <form
+          onSubmit={handleChatSubmit}
+          className="flex-grow-1 d-flex align-items-start"
+        >
+          <input
+            className="container-fluid h-100"
+            style={{ outline: 'none', border: 'none' }}
+            placeholder="Type a message..."
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+        </form>
+        <div className="d-flex justify-content-end px-3">
+          <i
+            className="bi bi-send-fill"
+            style={{ rotate: '45deg' }}
+            onClick={handleChatSubmit}
+          ></i>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
