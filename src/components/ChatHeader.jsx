@@ -1,52 +1,52 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
 import { useEffect, useRef, useState } from 'react';
 
 function ChatHeader(props) {
   const { client,receiverData,currentMessagedId,receiverClass } = props
   const [ modalShow, setModalShow ] = useState(false);
   const [ channelMembers,setChannelMembers ] = useState([])
+  const [ userAdded,setUserAdded ] = useState(false)
   const inputValueRef = useRef("")
 
   useEffect(() => {
     setChannelMembers(channelMembers)
-  }, [modalShow])
+  }, [modalShow, userAdded])
 
   const seeMembers = async () => {
-    console.log(receiverData.id)
     const response = await client.get(`/channels/${receiverData.id}`)
-    console.log(response)
-    console.log(response.data.data)
     const res = await client.get('/users')
     const allUsers = res.data.data
     const rawMembersData = response.data.data.channel_members
-    console.log(rawMembersData)
     const rawMembersId = rawMembersData.map( member => member.user_id)
     const membersData = rawMembersId.map( id => {
       return allUsers.find( user => user.id === id )
     })
-    console.log(membersData)
     setChannelMembers(membersData)
     setModalShow(true)
   }
 
   const addMember = async () => {
-    console.log(inputValueRef.current)
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (emailPattern.test(inputValueRef.current)) {
       try {
-        const res = await client.get("/users")
+        const userResponse = await client.get("/users")
 
-        const users = res.data.data;
-        const userData = users.find((user) => user.email === inputValueRef.current);
+        const allUsers = userResponse.data.data;
+        const userData = allUsers.find((user) => user.email === inputValueRef.current);
 
-
-        const response = await client.post("/channel/add_member",{
+        const addMemberResponse = await client.post("/channel/add_member",{
         "id": currentMessagedId,
         "member_id": userData.id
         })
-        console.log(response)
+        const channelDataResponse = await client.get(`/channels/${currentMessagedId}`)
+        const rawMembersData = channelDataResponse.data.data.channel_members
+        const rawMembersId = rawMembersData.map( member => member.user_id)
+        const membersData = rawMembersId.map( id => {
+          return allUsers.find( user => user.id === id )
+        })
+        setChannelMembers(membersData)
+        setUserAdded(true)
       } catch (error) {
         console.log(error)
       }
@@ -57,7 +57,6 @@ function ChatHeader(props) {
 
   const handleChange = (event) => {
     const value = event.target.value;
-    console.log(value)
     inputValueRef.current = value
   };
 
