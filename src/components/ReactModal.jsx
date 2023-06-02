@@ -19,8 +19,6 @@ export default function ReactModal(props) {
   const handleSubmit = (e) => {
     e.preventDefault()
     const createChannel = async () => {
-      console.log("creating new channel...")
-      console.log(addMemberList)
       try {
           const response = await client.post(`/channels`, {
               "name": newChannelName,
@@ -36,7 +34,6 @@ export default function ReactModal(props) {
             setReceiverClass("Channel")
             setConversation([])
           }
-          console.log(response)
       } catch (error) {
           console.log(error)
       }
@@ -84,7 +81,6 @@ export default function ReactModal(props) {
     onHide()
   }
   const handleDeleteMember = (idToDelete) => {
-    console.log(idToDelete)
     setAddMemberList(() => {
       return addMemberList.filter( member => {
         return member.id !== idToDelete

@@ -95,12 +95,12 @@ function CredentialsPage(props) {
   };
 
   return (
-    <div className="body-container">
+    <div className="container-fluid w-25" style={{marginRight: "10rem"}}>
       <div className="container">
-        <div className="card-body">
+        <div className="container-fluid d-flex flex-column justify-content-center align-items-center p-3">
           <h1 className="mb-4">{credentialsLabel}</h1>
-          <form autoComplete="off" onSubmit={handleSubmitForm}>
-            <div className="mb-3 main-form">
+          <form autoComplete="off" onSubmit={handleSubmitForm} className='container-fluid p-2 d-flex flex-column justify-content-center align-items-center gap-3'>
+            <div className="mb-3 main-form container-fluid">
               <CredentialsInput
                 name="username"
                 type="email"
@@ -109,7 +109,7 @@ function CredentialsPage(props) {
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
-            <div className="mb-3 main-form">
+            <div className="mb-3 main-form container-fluid">
               <CredentialsInput
                 name="password"
                 type="password"
@@ -119,7 +119,7 @@ function CredentialsPage(props) {
               />
             </div>
             {confirmPasswordShow && (
-              <div className="mb-3 main-form">
+              <div className="mb-3 main-form container-fluid">
                 <CredentialsInput
                   name="confirm password"
                   type="password"
@@ -130,7 +130,7 @@ function CredentialsPage(props) {
               </div>
             )}
             {error && <div className="text-danger mb-3">{error}</div>}
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary container-fluid">
               {credentialsLabel}
             </button>
             <div className="mt-3">
@@ -144,7 +144,6 @@ function CredentialsPage(props) {
               >
                 {confirmPasswordShow ? 'Login here' : 'Sign up here'}
               </button>
-              .
             </div>
           </form>
         </div>

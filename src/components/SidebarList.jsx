@@ -14,7 +14,6 @@ export default function SidebarList(props) {
     async function getData() {
         try {
             const response = await client.get(`/${type}`)
-            console.log(response)
             if(response.data.errors !== "No available channels.") setData(response.data)
         } catch (error) {
             console.log(error)
@@ -35,7 +34,6 @@ export default function SidebarList(props) {
                 "name": newChannelName,
                 "user_ids": usersToAdd
             })
-            console.log(response)
         } catch (error) {
             console.log(error)
         }

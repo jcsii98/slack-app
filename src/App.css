@@ -62,8 +62,6 @@ body {
 }
 /* utility classes */
 /* button-styles */
-.btn {
-}
 .btn-primary {
   cursor: pointer;
   background-color: #343a40;

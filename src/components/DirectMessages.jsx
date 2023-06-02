@@ -16,8 +16,6 @@ export default function DirectMessages(props) {
   const [ data,setData ] = useState([])
 
   useEffect(() => {
-    console.log("###################################################")
-    console.log("in direct messages...")
     const getData = () => {
       setData(() => {
         const localUserContact = contacts.find( data => {
@@ -31,10 +29,8 @@ export default function DirectMessages(props) {
   },[messageSuccess])
 
   const userClick = async (id) => {
-    console.log("current messaged id: " + id)
     setCurrentMessagedId(id)
     const response = await client.get(`/messages?receiver_id=${id}&receiver_class=User`)
-    console.log(response)
     setReceiverClass("User")
     const userReceiver = response.data.data[0].receiver
     setReceiverData({ id: userReceiver.id, name: userReceiver.email })

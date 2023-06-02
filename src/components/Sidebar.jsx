@@ -6,7 +6,6 @@ export default function Sidebar(props) {
     client,
     loggedUser,
     contacts,
-    setContacts,
     messageSuccess,
     setConversation,
     currentMessagedId,
@@ -17,13 +16,6 @@ export default function Sidebar(props) {
     setReceiverClass,
     setMessageSuccess } = props
 
-
-  const testClick = async () => {
-    const response = await client.get(`/channels`)
-    console.log(response)
-    console.log(response.data.data)
-  }
-
   const sendMessage = () => {
     setConversation([])
     setCurrentMessagedId(0)
@@ -31,49 +23,49 @@ export default function Sidebar(props) {
     setMessageSuccess(false)
   }
 
-  async function handleClick () {
-    try {
-      // const response = await client.post(`messages`, {
-      //   receiver_id: "54",
-      //   receiver_class: "User",
-      //   body: "bumili ka ng toyo at suka sa tindahan ni aleng nena"
-      // })
+  // async function handleClick () {
+  //   try {
+  //     // const response = await client.post(`messages`, {
+  //     //   receiver_id: "54",
+  //     //   receiver_class: "User",
+  //     //   body: "bumili ka ng toyo at suka sa tindahan ni aleng nena"
+  //     // })
 
-      const response = await client.get(`/users`)
-      const users = Object.values(response.data)[0]
+  //     const response = await client.get(`/users`)
+  //     const users = Object.values(response.data)[0]
 
-      const userEndpoints = users.map( user => {
-        return `/messages?receiver_id=${user.id}&receiver_class=User`
-      })
+  //     const userEndpoints = users.map( user => {
+  //       return `/messages?receiver_id=${user.id}&receiver_class=User`
+  //     })
 
-      Promise.allSettled(userEndpoints.map(async (endpoint) => 
-        await client.get(endpoint)
-          .catch(error => {
-            console.log(error)
-          }) 
-      )).then( results => {
-        // const val = results.reduce( (filtered, result) => {
-        //   if(result.status === 'fulfilled' && result.value.data.data.length !== 0) {
-        //     filtered.push(Object.values(result.value.data.data))
-        //   }
-        //   return filtered
-        // },[])
-        // console.log(val)
+  //     Promise.allSettled(userEndpoints.map(async (endpoint) => 
+  //       await client.get(endpoint)
+  //         .catch(error => {
+  //           console.log(error)
+  //         }) 
+  //     )).then( results => {
+  //       // const val = results.reduce( (filtered, result) => {
+  //       //   if(result.status === 'fulfilled' && result.value.data.data.length !== 0) {
+  //       //     filtered.push(Object.values(result.value.data.data))
+  //       //   }
+  //       //   return filtered
+  //       // },[])
+  //       // console.log(val)
 
-        // console.log(results)
+  //       // console.log(results)
 
-        // const filteredList = getFilteredList(users)
+  //       // const filteredList = getFilteredList(users)
 
-        // console.log("filtered list: ")
-        // console.log(response)
-      }).catch( error => console.log(error) )
+  //       // console.log("filtered list: ")
+  //       // console.log(response)
+  //     }).catch( error => console.log(error) )
 
       
 
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
   return (
       <div className="container-fluid bg-transparent d-flex flex-column gap-3 p-0" style={{width: "16%",color: "white"}}>

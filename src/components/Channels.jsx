@@ -12,7 +12,6 @@ export default function Channels(props) {
   useEffect(() => {
     const getData = async () => {
       const response = await client.get(`/channels`)
-      console.log(response)
       setData(() => {
         return response.data.data ?? []
       })
@@ -31,12 +30,8 @@ export default function Channels(props) {
     const res = await client.get(`/channels/${id}`)
     setReceiverData(res.data.data)
     setReceiverClass("Channel")
-    console.log(res.data.data)
     setCurrentMessagedId(id)
-    console.log("receiver id: " + id)
-    console.log("receiver class: " + receiverClass)
     const response = await client.get(`/messages?receiver_id=${id}&receiver_class=Channel`)
-    console.log(response)
     setConversation(response.data.data)
   } 
 

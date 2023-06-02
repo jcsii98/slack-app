@@ -12,20 +12,6 @@ function DashPage(props) {
   const [ receiverData,setReceiverData ] = useState({})
   const [ receiverClass, setReceiverClass ] = useState('')
 
-  // useEffect(() => {
-  //   console.log("receiver data: ")
-  //   console.log(receiverData)
-  //   console.log("receiver Class: ")
-  //   console.log(receiverClass)
-  //   console.log("current Messaged Id: ")
-  //   console.log(currentMessagedId)
-  //   console.log("conversation: ")
-  //   console.log(conversation)
-  //   console.log("messageSuccess: ")
-  //   console.log(messageSuccess)
-  // },[messageSuccess,conversation,currentMessagedId,receiverClass,receiverData])
-
-
   const client = axios.create({
     baseURL: "http://206.189.91.54/api/v1",
     headers: {

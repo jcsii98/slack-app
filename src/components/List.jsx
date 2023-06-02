@@ -1,4 +1,3 @@
-
 export default function List(props) {
     const { handleClick,title,classType,data,callback } = props
 

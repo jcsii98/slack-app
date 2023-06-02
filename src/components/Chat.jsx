@@ -22,11 +22,6 @@ function Chat(props) {
   const firstMountRef = useRef(true)
 
   useEffect(() => {
-    console.log("###################################################")
-    console.log("in chat component..")
-    console.log("current messaged id: " + currentMessagedId)
-    console.log("receiver data: ")
-    console.log(receiverData)
     const updateReceiver = async () => {
       try {
         const response = await client.get("/users")
@@ -46,10 +41,6 @@ function Chat(props) {
   }, [currentMessagedId])
 
   const sendMessage = async () => {
-    console.log("###################################################")
-    console.log("sending message...")
-    console.log(receiverData)
-    console.log(receiverClass)
     setMessageSuccess(false)
     try {
       const response = await client.post("/messages", {
@@ -58,8 +49,6 @@ function Chat(props) {
         body: message
       })
       if (response.statusText === "OK") {
-        console.log("message response: ")
-        console.log(response.data)
         setMessage('');
         if(receiverClass === "User") {
           setContacts(() => {
@@ -103,7 +92,7 @@ function Chat(props) {
         receiverClass={receiverClass}
         setReceiverClass={setReceiverClass}
       />}
-      <Message conversation={conversation}/>
+      <Message conversation={conversation} loggedUser={loggedUser}/>
       <div className="container-fluid rounded-4 border border-dark d-flex flex-column px-3 py-2" style={{height: "18%", marginTop: "auto"}}>
         <div className="d-flex border-bottom gap-3 pb-1" style={{fontSize: "1.2rem"}}>
           <i className="bi bi-type-bold"></i>

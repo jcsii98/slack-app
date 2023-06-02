@@ -52,7 +52,6 @@ function ChatHeader(props) {
       try {
         const userResponse = await client.get("/users")
         const allUsers = userResponse.data.data;
-        console.log(userResponse)
         const userData = allUsers.find((user) => user.email === inputValueRef.current);
 
         const addMemberResponse = await client.post("/channel/add_member",{
