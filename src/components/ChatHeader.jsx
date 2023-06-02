@@ -89,7 +89,7 @@ function ChatHeader(props) {
         size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        style={{maxHeight: "45rem"}}
+        style={{maxHeight: "45rem", marginTop: "5rem"}}
       >
       <Modal.Header closeButton style={{border: "none", paddingRight: "2rem"}}>
         <Modal.Title id="contained-modal-title-vcenter" className='d-flex gap-2' style={{fontSize: "1.5rem", marginLeft: "1rem", marginTop: "1.5rem"}}>
