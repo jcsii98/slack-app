@@ -91,31 +91,33 @@ export default function ReactModal(props) {
   return (
     <Modal
         show={show}
-        size="lg"
+        size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
+        onHide={handleOnHide}
     >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Create Channel
+      <Modal.Header className='' style={{border: "none", padding: "2em"}} closeButton>
+        <Modal.Title id="contained-modal-title-vcenter" style={{fontSize: "1.8rem", fontWeight: "bold"}}>
+          Create a Channel
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <Form onSubmit={handleSubmit} className='d-flex flex-column gap-3 needs-validation'>
-          <Form.Group className="d-flex flex-row gap-3 justify-content-left align-items-center" controlId="channelName">
-            <Form.Label>Channel Name:</Form.Label>
-            <Form.Control type="text" placeholder="Channel Name" onChange={handleChannelNameChange} required/>
+      <Modal.Body className='container-fluid' style={{padding: "0 1.3em 1em 1.3em", fontSize: "1.5rem"}}>
+        <Form autoComplete='off' onSubmit={handleSubmit} className=' d-flex flex-column gap-3 needs-validation'>
+          <Form.Group className="d-flex flex-column justify-content-center align-items-start" controlId="channelName">
+            <Form.Label>Name</Form.Label>
+            <Form.Control type="text" placeholder="Channel Name" onChange={handleChannelNameChange} style={{height: "3rem"}} required/>
           </Form.Group>
-          <Form.Group className="d-flex flex-row gap-3 justify-content-left align-items-center" controlId="formBasicPassword">
-            <Form.Label>Add Member/s:</Form.Label>
-            <Form.Control type="email" placeholder="Member Email" onChange={handleMemberInputChange} required/>
-            <Button variant="primary" type="button" onClick={handleMemberListChange}>Add Member</Button>
+          <Form.Group className="d-flex flex-column justify-content-center align-items-start" style={{fontSize: "1.5rem"}} controlId="formBasicPassword">
+            <Form.Label>Add Member/s</Form.Label>
+            <Form.Control type="email" placeholder="Member Email" onChange={handleMemberInputChange} style={{height: "3rem"}} required/>
+            <Button variant="primary" type="button" onClick={handleMemberListChange} style={{marginTop: "1rem", marginLeft: "auto"}}>Add Member</Button>
           </Form.Group>
-          <ul className='container d-flex flex-column gap-2 border border primary'>
+          <ul className='container d-flex flex-column gap-2 border border primary' style={{overflow: "auto", maxHeight: "20rem"}}>
             {addMemberList.map( member => {
               return(
-                <li key={member.id} className='d-flex'>
-                  <div className='flex-grow-1 text-center'>{member.email}</div>
+                <li key={member.id} className='d-flex justify-content-center gap-3 align-items-center p-2'>
+                  <i className="bi bi-person-circle" style={{fontSize: "1.8rem"}}/>
+                  <div className='flex-grow-1' style={{fontSize: "1.3rem"}}>{member.email}</div>
                   { member.id !== loggedUser.id  ? <button type='button' className='btn btn-danger' onClick={() => handleDeleteMember(member.id)}>Remove</button>
                     : <button disabled type='button' className='btn btn-danger' onClick={() => handleDeleteMember(member.id)}>Remove</button>
                   }
@@ -124,7 +126,6 @@ export default function ReactModal(props) {
             })}
           </ul>
           <div className="d-flex flex-row gap-3 justify-content-end">
-            <Button onClick={handleOnHide}>Cancel</Button>
             <Button variant="primary" type="submit">Create Channel</Button>
           </div>
         </Form>

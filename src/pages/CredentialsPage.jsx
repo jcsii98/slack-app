@@ -4,15 +4,16 @@ import axios from 'axios';
 
 function CredentialsPage(props) {
   const { setIsLoggedIn,setConfig,setLoggedUser } = props;
-  const [credentialsLabel, setCredentialsLabel] = useState('Login');
-  const [confirmPasswordShow, setConfirmPasswordShow] = useState(false);
-  const [submitFunction, setSubmitFunction] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+  const [ credentialsLabel, setCredentialsLabel] = useState('Login');
+  const [ confirmPasswordShow, setConfirmPasswordShow] = useState(false);
+  const [ submitFunction, setSubmitFunction] = useState(false);
+  const [ username, setUsername] = useState('');
+  const [ password, setPassword] = useState('');
+  const [ confirmPassword, setConfirmPassword] = useState('');
+  const [ error, setError] = useState('');
 
   const showSignup = () => {
+    console.log("clicked!")
     if (credentialsLabel === 'Login') {
       setCredentialsLabel('Signup');
       setConfirmPasswordShow(true);
@@ -53,6 +54,7 @@ function CredentialsPage(props) {
             return data.userId === userData.id
           })
           if(!userContacts) {
+
             localStorage.setItem("contacts",JSON.stringify([...localContacts, { userId: userData.id, contacts: [] }]))
           }
         } else {
@@ -79,6 +81,8 @@ function CredentialsPage(props) {
         password: password,
         password_confirmation: confirmPassword
       });
+      setError("User registered success!")
+      console.log("User registered success!")
     } catch (error) {
       console.error(error);
       setError('User already exists. Please try again.'); // Set the error state
@@ -95,39 +99,33 @@ function CredentialsPage(props) {
   };
 
   return (
-    <div className="container-fluid w-25" style={{marginRight: "10rem"}}>
+    <div className="container-fluid w-25" style={{marginRight: "10rem", zIndex: 2}}>
       <div className="container">
         <div className="container-fluid d-flex flex-column justify-content-center align-items-center p-3">
           <h1 className="mb-4">{credentialsLabel}</h1>
           <form autoComplete="off" onSubmit={handleSubmitForm} className='container-fluid p-2 d-flex flex-column justify-content-center align-items-center gap-3'>
-            <div className="mb-3 main-form container-fluid">
-              <CredentialsInput
-                name="username"
-                type="email"
-                label="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </div>
-            <div className="mb-3 main-form container-fluid">
-              <CredentialsInput
-                name="password"
-                type="password"
-                label="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
+            <CredentialsInput
+              name="username"
+              type="email"
+              label="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <CredentialsInput
+              name="password"
+              type="password"
+              label="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
             {confirmPasswordShow && (
-              <div className="mb-3 main-form container-fluid">
-                <CredentialsInput
-                  name="confirm password"
-                  type="password"
-                  label="Confirm Password"
-                  value={confirmPassword} // Bind value to state variable
-                  onChange={(e) => setConfirmPassword(e.target.value)} // Update state on change
-                />
-              </div>
+              <CredentialsInput
+                name="confirm password"
+                type="password"
+                label="Confirm Password"
+                value={confirmPassword} // Bind value to state variable
+                onChange={(e) => setConfirmPassword(e.target.value)} // Update state on change
+              />
             )}
             {error && <div className="text-danger mb-3">{error}</div>}
             <button type="submit" className="btn btn-primary container-fluid">

@@ -12,8 +12,14 @@ export default function DirectMessages(props) {
     setCurrentMessagedId,
     setReceiverData,
     receiverClass,
-    setReceiverClass } = props
+    setReceiverClass,
+    receiverData } = props
   const [ data,setData ] = useState([])
+  const [ clicked, setClicked ] = useState(false) 
+
+  useEffect(() => {
+    setReceiverData(receiverData)
+  }, [clicked])
 
   useEffect(() => {
     const getData = () => {
@@ -29,12 +35,14 @@ export default function DirectMessages(props) {
   },[messageSuccess])
 
   const userClick = async (id) => {
+    setClicked(true)
     setCurrentMessagedId(id)
     const response = await client.get(`/messages?receiver_id=${id}&receiver_class=User`)
     setReceiverClass("User")
     const userReceiver = response.data.data[0].receiver
     setReceiverData({ id: userReceiver.id, name: userReceiver.email })
     setConversation(Array.from(response.data.data))
+    setClicked(false)
   } 
 
   return (

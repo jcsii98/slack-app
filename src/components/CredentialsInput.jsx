@@ -1,16 +1,19 @@
 function CredentialsInput(props) {
   const { type, name, label, value, onChange } = props;
   return (
-    <div className="d-flex flex-column gap-2">
-      <label htmlFor={name}>{label}</label>
+    <div className="form-floating w-100 p-0">
       <input
-        className="container-fluid"
-        style={{borderTop: "none", borderLeft: "none", borderRight: "none", borderBottom: '1px solid black'}}
+        id={name}
+        className="form-control"
+        style={{fontSize: "1.5rem", borderTop: "none", borderLeft: "none", borderRight: "none", borderBottom: '1px solid black'}}
         type={type}
         name={name}
         value={value}
         onChange={onChange}
+        placeholder={label}
+        required
       />
+      <label htmlFor={name}>{label}</label> 
     </div>
   );
 }

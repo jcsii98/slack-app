@@ -77,24 +77,24 @@ function Homepage(props) {
       ) : (
         <div className='container-fluid d-flex justify-content-center align-items-center h-100' style={{
           backgroundImage: `url("${team}"), url("${slack}")`,
-          backgroundPosition: "25% 25%, 50% 3%",
-          backgroundSize: "500px, 200px",
+          backgroundPosition: "30% 10%, 81.5% 15%",
+          backgroundSize: "650px, 200px",
           backgroundRepeat: "no-repeat no-repeat"
         }}>
-          <div className="d-flex flex-column gap-2" style={{width: "100rem",fontSize: "1rem", color: "white", position: "absolute", top: "61%", left: "10%"}}>
+          <div className="d-flex flex-column gap-2" style={{zIndex:1,width: "100rem",fontSize: "1rem", color: "white", position: "absolute", top: "63%", left: "10%"}}>
             <div className='d-flex flex-column' style={{fontSize: "3rem"}}>
               <span className=''>Make work life&nbsp;</span>
               <Typewriter
                 onInit={(typewriter) => {
                     typewriter
                         .typeString("simpler")
-                        .pauseFor(500)
+                        .pauseFor(300)
                         .deleteAll()
                         .typeString("more pleasant")
-                        .pauseFor(500)
+                        .pauseFor(300)
                         .deleteAll()
-                        .typeString("and more productive.")
-                        .pauseFor(500)
+                        .typeString("more productive")
+                        .pauseFor(300)
                         .deleteAll()
                         .typeString("simpler, more pleasant, and more productive.")
                         .start();

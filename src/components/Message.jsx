@@ -9,6 +9,7 @@ export default function Message(props) {
   useEffect(() => {
     console.log(loggedUser)
     bottomRef.current?.scrollIntoView({behavior: 'smooth'})
+    console.log(conversation)
   },[conversation])
 
   const getHourAndMinutes = (dateToEdit) => {
@@ -34,10 +35,9 @@ export default function Message(props) {
       {conversation?.map( message => {
         return(
           message.sender.email === loggedUser.email ?
-          <div key={message.id} className="d-flex flex-row justify-content-end gap-3 px-3 py-2 ">
-            
+          <div key={message.id} className="d-flex flex-row justify-content-end gap-3 px-3 py-2" style={{maxWidth: "50%", marginLeft: "auto"}}>
             <div className="d-flex flex-column justify-content-center gap-2">
-              <div className="d-flex flex-row gap-3 align-items-center">
+              <div className="d-flex flex-row gap-3 align-items-center" style={{marginLeft: "auto"}}>
                 <div style={{fontSize: "1.2rem",fontWeight: "bold"}}>{message.sender.email}</div>
                 <OverlayTrigger
                   placement="top"
@@ -59,7 +59,7 @@ export default function Message(props) {
             <div ref={bottomRef}/>
           </div>
           :
-          <div key={message.id} className="d-flex flex-row gap-3 px-3 py-2 ">
+          <div key={message.id} className="d-flex flex-row gap-3 px-3 py-2" style={{maxWidth: "50%"}}>
             <i className="bi bi-person-circle" style={{fontSize: "3rem"}}></i>
             <div className="d-flex flex-column justify-content-center gap-2">
               <div className="d-flex flex-row gap-3 align-items-center">

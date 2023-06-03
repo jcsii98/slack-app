@@ -83,45 +83,12 @@ body {
   color: inherit;
 }
 
-/* margin-classes */
-.mb-4 {
-  margin-bottom: 16px;
-}
-.mb-3 {
-  margin-bottom: 12px;
-}
-.mt-3 {
-  margin-top: 12px;
-}
-.main-form {
-  display: grid;
-}
-.main-input {
-  color: black !important;
-  width: 50%;
-  background: white;
-  border: none;
-  border-bottom: 1px solid black;
-}
-
 /* main-header */
 .navbar {
   height: 100%;
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   place-items: center;
-}
-.form-control {
-  background-color: white;
-  border: none;
-  border-radius: 10px;
-  height: 20px;
-  width: 80%;
-  max-width: 500px;
-}
-.input-group {
-  display: flex;
-  justify-content: center;
 }
 .container-form {
   width: 100%;
