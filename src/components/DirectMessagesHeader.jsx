@@ -4,7 +4,7 @@ function DirectMessagesHeader(props) {
   const { client, setReceiverData, receiverClass, setReceiverClass } = props;
   const [inputValue, setInputValue] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [userExists, setUserExits] = useState(false);
+  const [userExists, setUserExists] = useState(false);
 
   const checkUserExists = async () => {
     try {
@@ -17,9 +17,12 @@ function DirectMessagesHeader(props) {
         const userData = users.find((user) => user.uid === inputValue);
         setReceiverData(userData);
         setReceiverClass('User');
+        setUserExists(true);
       } else {
         console.log('User does not exist');
         setReceiverData();
+        setReceiverClass('');
+        setUserExists(false);
       }
     } catch (error) {
       console.error('Failed to retrieve user:', error);
@@ -32,8 +35,6 @@ function DirectMessagesHeader(props) {
 
       if (response.status === 200) {
         const channels = response.data.data; // Access the "data" field of the response
-
-        console.log('Channels:', channels); // Log channels to inspect its structure
 
         const channelExists = channels.some(
           (channel) => channel.name === value
@@ -82,10 +83,8 @@ function DirectMessagesHeader(props) {
     const value = inputValue;
 
     if (emailPattern.test(value)) {
-      console.log('USER');
       checkUserExists(value);
     } else {
-      console.log('CHANNEL');
       checkChannelExists(value);
     }
   };

@@ -3,7 +3,10 @@ function Header(props) {
   const { setIsLoggedIn, isLoggedIn, loggedUser } = props;
   const buttonClick = () => {
     setIsLoggedIn(false);
-    localStorage.clear();
+    localStorage.removeItem('access-token');
+    localStorage.removeItem('client');
+    localStorage.removeItem('expiry');
+    localStorage.removeItem('uid');
   };
   return (
     <div

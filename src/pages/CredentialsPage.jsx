@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function CredentialsPage(props) {
-  const { setIsLoggedIn, setConfig, setLoggedUser } = props;
+  const { setIsLoggedIn, setLoggedUser } = props;
   const [credentialsLabel, setCredentialsLabel] = useState('Login');
   const [confirmPasswordShow, setConfirmPasswordShow] = useState(false);
   const [submitFunction, setSubmitFunction] = useState(false);
@@ -36,14 +36,8 @@ function CredentialsPage(props) {
       const userData = response.data.data;
 
       if (response.status === 200) {
-        // Store authentication headers in localStorage
-        localStorage.setItem('access-token', response.headers['access-token']);
-        localStorage.setItem('client', response.headers.client);
-        localStorage.setItem('expiry', response.headers.expiry);
-        localStorage.setItem('uid', response.headers.uid);
-
         setIsLoggedIn(true);
-        setLoggedUser({ ...userData });
+        setLoggedUser({ ...response.data.data });
 
         let localContacts = JSON.parse(localStorage.getItem('contacts'));
 
@@ -66,12 +60,17 @@ function CredentialsPage(props) {
             JSON.stringify([{ userId: userData.id, contacts: [] }])
           );
         }
+
+        localStorage.setItem('access-token', response.headers['access-token']);
+        localStorage.setItem('client', response.headers['client']);
+        localStorage.setItem('expiry', response.headers['expiry']);
+        localStorage.setItem('uid', response.headers['uid']);
       } else {
         setError('Invalid username or password. Please try again.'); // Set the error state
       }
     } catch (error) {
       console.error(error);
-      setError('An error has occurred. Please try again.'); // Set the error state
+      setError('An error has occured. Please try again.'); // Set the error state
     }
   }
 
@@ -98,12 +97,16 @@ function CredentialsPage(props) {
   };
 
   return (
-    <div className="body-container">
+    <div className="container-fluid w-25" style={{ marginRight: '10rem' }}>
       <div className="container">
-        <div className="card-body">
+        <div className="container-fluid d-flex flex-column justify-content-center align-items-center p-3">
           <h1 className="mb-4">{credentialsLabel}</h1>
-          <form autoComplete="off" onSubmit={handleSubmitForm}>
-            <div className="mb-3 main-form">
+          <form
+            autoComplete="off"
+            onSubmit={handleSubmitForm}
+            className="container-fluid p-2 d-flex flex-column justify-content-center align-items-center gap-3"
+          >
+            <div className="mb-3 main-form container-fluid">
               <CredentialsInput
                 name="username"
                 type="email"
@@ -112,7 +115,7 @@ function CredentialsPage(props) {
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
-            <div className="mb-3 main-form">
+            <div className="mb-3 main-form container-fluid">
               <CredentialsInput
                 name="password"
                 type="password"
@@ -122,7 +125,7 @@ function CredentialsPage(props) {
               />
             </div>
             {confirmPasswordShow && (
-              <div className="mb-3 main-form">
+              <div className="mb-3 main-form container-fluid">
                 <CredentialsInput
                   name="confirm password"
                   type="password"
@@ -133,7 +136,7 @@ function CredentialsPage(props) {
               </div>
             )}
             {error && <div className="text-danger mb-3">{error}</div>}
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary container-fluid">
               {credentialsLabel}
             </button>
             <div className="mt-3">
@@ -147,7 +150,6 @@ function CredentialsPage(props) {
               >
                 {confirmPasswordShow ? 'Login here' : 'Sign up here'}
               </button>
-              .
             </div>
           </form>
         </div>

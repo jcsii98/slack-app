@@ -2,7 +2,7 @@ import ChatHeader from './ChatHeader';
 import Chat from './Chat';
 
 function DashboardCenter(props) {
-  const { 
+  const {
     conversation,
     client,
     loggedUser,
@@ -15,11 +15,17 @@ function DashboardCenter(props) {
     receiverData,
     setReceiverData,
     receiverClass,
-    setReceiverClass } = props
+    setReceiverClass,
+  } = props;
 
   return (
     <div className="container-fluid h-100 d-flex flex-column p-0">
-      <ChatHeader client={client} receiverData={receiverData} currentMessagedId={currentMessagedId}/>
+      <ChatHeader
+        client={client}
+        receiverData={receiverData}
+        currentMessagedId={currentMessagedId}
+        receiverClass={receiverClass}
+      />
       <Chat
         client={client}
         loggedUser={loggedUser}

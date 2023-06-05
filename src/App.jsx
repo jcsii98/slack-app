@@ -1,16 +1,76 @@
 import Homepage from './pages/Homepage';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import LoadingPage from './pages/LoadingPage';
+import api from './api.js';
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedUser, setLoggedUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [config, setConfig] = useState({
+    accessToken: '',
+    client: '',
+    expiry: '',
+    uid: '',
+  });
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
+  useEffect(() => {
+    setConfig(config);
+  }, [isLoggedIn]);
+  useEffect(() => {
+    const accessToken = localStorage.getItem('access-token');
+    const client = localStorage.getItem('client');
+    const expiry = localStorage.getItem('expiry');
+    const uid = localStorage.getItem('uid');
+
+    if (accessToken && client && expiry && uid) {
+      api.defaults.headers.common['access-token'] = accessToken;
+      api.defaults.headers.common.client = client;
+      api.defaults.headers.common.expiry = expiry;
+      api.defaults.headers.common.uid = uid;
+
+      api
+        .get('http://206.189.91.54/api/v1/auth/validate_token')
+        .then((response) => {
+          setLoggedUser(response.data.data);
+          setConfig({
+            accessToken: accessToken,
+            client: client,
+            expiry: expiry,
+            uid: uid,
+          });
+          setIsLoggedIn(true);
+        })
+        .catch((error) => {
+          console.error(error);
+          setIsLoggedIn(false);
+          setLoggedUser(null);
+        });
+    } else {
+      setIsLoggedIn(false);
+      setLoggedUser(null);
+    }
+  }, []);
 
   return (
-    <Homepage
-      loggedUser={loggedUser}
-      setLoggedUser={setLoggedUser}
-      isLoggedIn={isLoggedIn}
-      setIsLoggedIn={setIsLoggedIn}
-    />
+    <>
+      {isLoading ? (
+        <LoadingPage />
+      ) : (
+        <Homepage
+          loggedUser={loggedUser}
+          setLoggedUser={setLoggedUser}
+          isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
+        />
+      )}
+    </>
   );
 }
 
