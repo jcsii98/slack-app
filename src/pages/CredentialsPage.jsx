@@ -50,17 +50,16 @@ function CredentialsPage(props) {
         let localContacts = JSON.parse(localStorage.getItem("contacts"))
 
         if(localContacts) {
-          const userContacts = localContacts.find( data => {
-            return data.userId === userData.id
-          })
+          const userContacts = localContacts[userData.id]
           if(!userContacts) {
-
-            localStorage.setItem("contacts",JSON.stringify([...localContacts, { userId: userData.id, contacts: [] }]))
+            localStorage.setItem("contacts",JSON.stringify({...localContacts, [userData.id] : {} }))
           }
         } else {
-          localStorage.setItem("contacts", JSON.stringify([ { userId: userData.id, contacts: [] } ]))
+          localStorage.setItem("contacts", JSON.stringify({ [userData.id] : {} }))
         }
         
+        // 3422: "jose.saribong@email.com", 3466: "jsmith98@gmail.com"
+
         localStorage.setItem('access-token', response.headers['access-token']);
         localStorage.setItem('client', response.headers['client']);
         localStorage.setItem('expiry', response.headers['expiry']);

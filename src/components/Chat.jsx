@@ -52,21 +52,16 @@ function Chat(props) {
         setMessage('');
         if(receiverClass === "User") {
           setContacts(() => {
-            const localContacts = JSON.parse(localStorage.getItem("contacts"))
-            
-            const updatedLocalContacts = localContacts.map( contactData => {
-              if(contactData.userId === loggedUser.id) {
-                const bool = contactData.contacts.find( data => {
-                  return data.id === receiverData.id
-                })
-                if(!bool) {
-                  contactData.contacts = [ ...contactData.contacts, { id: receiverData.id, name: receiverData.email } ]
-                }
-              }
-              return contactData
-            })
-            localStorage.setItem("contacts",JSON.stringify(updatedLocalContacts))
-            return updatedLocalContacts
+            let localContacts = JSON.parse(localStorage.getItem("contacts"))
+
+            let updatedContact = localContacts[loggedUser.id]
+
+            if(!updatedContact[receiverData.id]) {
+              updatedContact = { ...updatedContact, [receiverData.id] : receiverData.email }
+            }
+            localContacts[loggedUser.id] = updatedContact
+            localStorage.setItem("contacts",JSON.stringify(localContacts))
+            return localContacts
           })
         }
         await setCurrentMessagedId(receiverData.id)
@@ -83,6 +78,13 @@ function Chat(props) {
     event.preventDefault();
     sendMessage();
   };
+
+  const onEnterPress = (e) => {
+    if(e.keyCode == 13 && e.shiftKey == false) {
+      e.preventDefault();
+      this.myFormRef.submit();
+    }
+  }
 
   return (
     <div className="container-fluid h-100 mh-100 p-2 bg-white d-flex flex-column gap-2">
@@ -110,13 +112,17 @@ function Chat(props) {
           <i className="bi bi-file-earmark-code"></i>
         </div>
         <form onSubmit={handleChatSubmit} className="flex-grow-1 d-flex align-items-start">
-          <input
-            className='container-fluid h-100'
-            style={{outline: "none", border: "none"}}
+          <textarea
+            className='container-fluid h-100 px-1 py-3'
+            style={{outline: "none", border: "none", whiteSpace: "pre", resize: "none"}}
             placeholder="Type a message..."
             type="text"
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={(e) => {
+              console.log(e.target.value)
+              setMessage(e.target.value)
+            }}
+            onKeyDown={onEnterPress}
           />
         </form>
         <div className="d-flex justify-content-end px-3">

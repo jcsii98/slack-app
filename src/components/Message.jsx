@@ -51,7 +51,7 @@ export default function Message(props) {
                   <div style={{fontSize: "0.9rem"}}>{getHourAndMinutes(message.created_at)}</div>
                 </OverlayTrigger>
               </div>
-              <div className="">
+              <div style={{whiteSpace: "pre-wrap", marginLeft: "auto"}}>
                 {message.body}
               </div>
             </div>
@@ -76,7 +76,7 @@ export default function Message(props) {
                   <div style={{fontSize: "0.9rem"}}>{getHourAndMinutes(message.created_at)}</div>
                 </OverlayTrigger>
               </div>
-              <div className="">
+              <div style={{whiteSpace: "pre-wrap"}}>
                 {message.body}
               </div>
             </div>

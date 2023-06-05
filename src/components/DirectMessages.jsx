@@ -24,10 +24,8 @@ export default function DirectMessages(props) {
   useEffect(() => {
     const getData = () => {
       setData(() => {
-        const localUserContact = contacts.find( data => {
-          return data.userId === loggedUser.id
-        })
-        return localUserContact.contacts
+        const localUserContact = Object.entries(contacts[loggedUser.id])
+        return localUserContact
       })
     }
     getData()
