@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import api from '../api.js';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function ReactModal(props) {
   const {
@@ -24,6 +24,7 @@ export default function ReactModal(props) {
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
   const [isLoading, setIsLoading] = useState(false);
   const [alert,setAlert] = useState({status: "", message: ""})
+  const isLoadingRef = useRef(false)
 
   useEffect(() => {
     setAddMemberList(addMemberList);
@@ -81,7 +82,8 @@ export default function ReactModal(props) {
     }
 
     try {
-      setIsLoading(true);
+      isLoadingRef.current = true
+      setAlert({status: "loading", message: "Checking if recipient exists..."})
       const response = await api.get(`/users`);
       const userList = response.data.data;
       const userIsFound = userList.find(
@@ -99,7 +101,7 @@ export default function ReactModal(props) {
     } catch (error) {
       console.log(error);
     } finally {
-      setIsLoading(false);
+      isLoadingRef.current = false
     }
   };
 
@@ -180,12 +182,21 @@ export default function ReactModal(props) {
                   </div>
                 </div>
                 :
+                alert.status === "success" ?
                 <div className="d-flex justify-content-center align-items-center gap-2 alert alert-success d-flex align-items-center p-2" role="alert" style={{fontWeight: "bold"}}>
                   <i class="bi bi-check-circle-fill"></i>
                   <div>
                     {alert.message}
                   </div>
                 </div> 
+                :
+                <div className="d-flex justify-content-center align-items-center gap-2 alert alert-primary d-flex align-items-center p-2" role="alert" style={{fontWeight: "bold"}}>
+                  <div class="spinner-border text-primary" role="status">
+                  </div>
+                  <div>
+                    {alert.message}
+                  </div>
+                </div>
           }
           <div className='container-fluid' style={{fontSize: "1.5rem"}}>Members:</div>
           <ul className="container d-flex flex-column justify-content-center align-items-start gap-2 border primary">

@@ -22,8 +22,8 @@ function Chat(props) {
 
   // message = receiver_id, receiver_class, body
   const [message, setMessage] = useState('');
+  const isLoadingRef = useRef(false)
   const firstMountRef = useRef(true);
-  
 
   useEffect(() => {
     const updateReceiver = async () => {
@@ -83,11 +83,11 @@ function Chat(props) {
 
   const handleChatSubmit = (event) => {
     event.preventDefault();
-    console.log(receiverData?.id)
     if(receiverData?.id === undefined) {
-      setAlert({status: "error", message: "Invalid recepient!"})
+      setAlert({status: "error", message: "Invalid recipient!"})
       return
     }
+    if(isLoadingRef.current.value === true) return
     sendMessage();
   };
 
@@ -95,6 +95,7 @@ function Chat(props) {
     <div className="container-fluid h-100 mh-100 p-2 bg-white d-flex flex-column gap-2">
       {currentMessagedId ? null : (
         <DirectMessagesHeader
+          isLoadingRef={isLoadingRef}
           setAlert={setAlert}
           client={client}
           setReceiverData={setReceiverData}
@@ -104,20 +105,29 @@ function Chat(props) {
       )}
       { currentMessagedId ? <></> :
           !alert.status ? <></> :
-          alert.status === "error" ? 
-            <div className="d-flex justify-content-center align-items-center gap-2 alert alert-danger p-2" role="alert" style={{fontWeight: "bold"}}>
-              <i className="bi bi-x-circle-fill"></i>
-              <div>
-                {alert.message}
+            alert.status === "error" ? 
+              <div className="d-flex justify-content-center align-items-center gap-2 alert alert-danger p-2" role="alert" style={{fontWeight: "bold"}}>
+                <i className="bi bi-x-circle-fill"></i>
+                <div>
+                  {alert.message}
+                </div>
               </div>
-            </div>
-            :
-            <div className="d-flex justify-content-center align-items-center gap-2 alert alert-success d-flex align-items-center p-2" role="alert" style={{fontWeight: "bold"}}>
-              <i class="bi bi-check-circle-fill"></i>
-              <div>
-                {alert.message}
-              </div>
-            </div> 
+              :
+              alert.status === "success" ?
+                <div className="d-flex justify-content-center align-items-center gap-2 alert alert-success d-flex align-items-center p-2" role="alert" style={{fontWeight: "bold"}}>
+                  <i className="bi bi-check-circle-fill"></i>
+                  <div>
+                    {alert.message}
+                  </div>
+                </div>
+                :
+                <div className="d-flex justify-content-center align-items-center gap-2 alert alert-primary d-flex align-items-center p-2" role="alert" style={{fontWeight: "bold"}}>
+                  <div class="spinner-border text-primary" role="status">
+                  </div>
+                  <div>
+                    {alert.message}
+                  </div>
+                </div>  
       }
       <Message conversation={conversation} loggedUser={loggedUser} />
       <div

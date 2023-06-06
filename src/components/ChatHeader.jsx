@@ -10,14 +10,17 @@ function ChatHeader(props) {
   const [channelData, setChannelData] = useState({});
   const [channelMembers, setChannelMembers] = useState([]);
   const [userAdded, setUserAdded] = useState(false);
-  const inputValueRef = useRef('');
   const [alert,setAlert] = useState({status: "", message: ""})
+  const inputValueRef = useRef('');
 
   useEffect(() => {
     setChannelMembers(channelMembers);
     setChannelData(channelData);
+    console.log(alert)
   }, [modalShow, userAdded]);
+
   const seeMembers = async () => {
+    setAlert({status: "loading", message: "Checking if user exists.."})
     const response = await api.get(`/channels/${receiverData.id}`);
     const res = await api.get('/users');
     const allUsers = res.data.data;
@@ -44,11 +47,15 @@ function ChatHeader(props) {
       return allUsers.find((user) => user.id === id);
     });
     setChannelMembers(membersData);
+    setAlert({status: "", message: ""})
     setModalShow(true);
   };
+
   const addMember = async () => {
+    console.log(alert)
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (emailPattern.test(inputValueRef.current)) {
+      setAlert({status: "loading", message: "Checking if user exists.."})
       try {
         const memberExists = channelMembers.find( member => {
           return member.uid === inputValueRef.current
@@ -94,6 +101,18 @@ function ChatHeader(props) {
   };
   return (
     <>
+      { !alert.status ? <></>
+          : 
+          <div className="d-flex justify-content-center align-items-center gap-2 alert alert-primary d-flex align-items-center p-2" role="alert" 
+            style={{fontWeight: "bold", position: "absolute", left: "45%", top: "45%", backgroundColor: "none"}}
+          >
+            <div className="spinner-border text-primary" role="status">
+            </div>
+            <div>
+              Getting Channel details...
+            </div>
+          </div>
+      }
       <Modal
         show={modalShow}
         onHide={() => {
@@ -175,20 +194,29 @@ function ChatHeader(props) {
                 </button>
               </div>
               { !alert.status ? <></> :
-                   alert.status === "error" ?
-                   <div className="d-flex justify-content-center align-items-center gap-2 alert alert-danger p-2" role="alert" style={{fontWeight: "bold"}}>
-                    <i className="bi bi-x-circle-fill"></i>
-                    <div>
-                      {alert.message}
+                  alert.status === "error" ?
+                    <div className="d-flex justify-content-center align-items-center gap-2 alert alert-danger p-2" role="alert" style={{fontWeight: "bold"}}>
+                      <i className="bi bi-x-circle-fill"></i>
+                      <div>
+                        {alert.message}
+                      </div>
                     </div>
-                  </div>
-                   :
-                   <div className="d-flex justify-content-center align-items-center gap-2 alert alert-success d-flex align-items-center p-2" role="alert" style={{fontWeight: "bold"}}>
-                    <i className="bi bi-check-circle-fill"></i>
-                    <div>
-                      {alert.message}
-                    </div>
-                  </div>       
+                    :
+                    alert.status === "success" ?
+                      <div className="d-flex justify-content-center align-items-center gap-2 alert alert-success d-flex align-items-center p-2" role="alert" style={{fontWeight: "bold"}}>
+                        <i className="bi bi-check-circle-fill"></i>
+                        <div>
+                          {alert.message}
+                        </div>
+                      </div>
+                      :
+                      <div className="d-flex justify-content-center align-items-center gap-2 alert alert-primary d-flex align-items-center p-2" role="alert" style={{fontWeight: "bold"}}>
+                        <div className="spinner-border text-primary" role="status">
+                        </div>
+                        <div>
+                          {alert.message}
+                        </div>
+                      </div>    
               }
               <ul
                 className="d-flex flex-column justify-content-center  align-items-start px-0 gap-3"
