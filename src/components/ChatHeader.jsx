@@ -123,19 +123,22 @@ function ChatHeader(props) {
                 <></>
             ) : (
                 <div
-                    className='d-flex justify-content-center align-items-center gap-2 alert alert-primary d-flex align-items-center p-2'
+                    className='d-flex justify-content-center align-items-center gap-2 d-flex align-items-center p-3'
                     role='alert'
                     style={{
                         fontWeight: 'bold',
                         position: 'absolute',
                         left: '45%',
                         top: '45%',
-                        backgroundColor: 'none',
+                        backgroundColor: '#234143',
+                        color: "white",
+                        boxShadow: "0 0 0 50vmax rgba(0,0,0,.5)"
                     }}
                 >
                     <div
-                        className='spinner-border text-primary'
+                        className='spinner-border'
                         role='status'
+                        style={{color: "white"}}
                     ></div>
                     <div>Getting Channel details...</div>
                 </div>
@@ -262,7 +265,7 @@ function ChatHeader(props) {
                             )}
                             <ul
                                 className='d-flex flex-column justify-content-center  align-items-start px-0 gap-3'
-                                style={{overflow: 'auto', maxHeight: '20rem'}}
+                                style={{overflow: 'auto', maxHeight: '15rem'}}
                             >
                                 {channelMembers.map((member) => {
                                     return (
