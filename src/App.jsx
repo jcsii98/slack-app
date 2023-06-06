@@ -15,15 +15,6 @@ function App() {
   });
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  }, []);
-
-  useEffect(() => {
-    setConfig(config);
-  }, [isLoggedIn]);
-  useEffect(() => {
     const accessToken = localStorage.getItem('access-token');
     const client = localStorage.getItem('client');
     const expiry = localStorage.getItem('expiry');
@@ -46,15 +37,18 @@ function App() {
             uid: uid,
           });
           setIsLoggedIn(true);
+          setIsLoading(false); // Set isLoading to false after successful authentication
         })
         .catch((error) => {
           console.error(error);
           setIsLoggedIn(false);
           setLoggedUser(null);
+          setIsLoading(false); // Set isLoading to false after authentication check fails
         });
     } else {
       setIsLoggedIn(false);
       setLoggedUser(null);
+      setIsLoading(false); // Set isLoading to false when there are no authentication keys
     }
   }, []);
 
