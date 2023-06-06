@@ -13,6 +13,7 @@ export default function Channels(props) {
     setReceiverData,
     setReceiverClass,
     setCurrentMessagedId,
+    setAlert
   } = props;
   const [modalShow, setModalShow] = useState(false);
   const [data, setData] = useState([]);
@@ -37,6 +38,7 @@ export default function Channels(props) {
   }, [createChannelIsSuccess, messageSuccess]);
 
   const channelClick = async (id) => {
+    setAlert({status: "", message: ""})
     const res = await api.get(`/channels/${id}`);
     setReceiverData(res.data.data);
     setReceiverClass('Channel');

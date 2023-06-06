@@ -324,3 +324,7 @@ body {
   display: flex;
   justify-content: end;
 }
+
+.form-floating {
+  padding-top: 0.2em;
+}

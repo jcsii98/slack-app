@@ -13,16 +13,15 @@ export default function DirectMessages(props) {
     setReceiverData,
     receiverClass,
     setReceiverClass,
+    setAlert
   } = props;
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const getData = () => {
       setData(() => {
-        const localUserContact = contacts.find((data) => {
-          return data.userId === loggedUser.id;
-        });
-        return localUserContact.contacts;
+        const localUserContact = Object.entries(contacts[loggedUser.id])
+        return localUserContact
       });
     };
     getData();
@@ -31,12 +30,16 @@ export default function DirectMessages(props) {
   }, [messageSuccess]);
 
   const userClick = async (id) => {
+    setAlert({status: "", message: ""})
+    console.log(id)
     setCurrentMessagedId(id);
     const response = await api.get(
       `/messages?receiver_id=${id}&receiver_class=User`
     );
     setReceiverClass('User');
-    const userReceiver = response.data.data[0].receiver;
+    console.log(response)
+    const userReceiver = response.data.data[0].receiver.id === loggedUser.id ? response.data.data[0].sender : response.data.data[0].receiver
+    console.log(userReceiver)
     setReceiverData({ id: userReceiver.id, name: userReceiver.email });
     setConversation(Array.from(response.data.data));
   };

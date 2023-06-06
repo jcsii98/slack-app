@@ -2,20 +2,24 @@ import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import Modal from 'react-bootstrap/Modal';
 import { useEffect, useRef, useState } from 'react';
+import api from '../api.js';
+
 function ChatHeader(props) {
-  const { client, receiverData, currentMessagedId, receiverClass } = props;
+  const { receiverData, currentMessagedId, receiverClass } = props;
   const [modalShow, setModalShow] = useState(false);
   const [channelData, setChannelData] = useState({});
   const [channelMembers, setChannelMembers] = useState([]);
   const [userAdded, setUserAdded] = useState(false);
   const inputValueRef = useRef('');
+  const [alert,setAlert] = useState({status: "", message: ""})
+
   useEffect(() => {
     setChannelMembers(channelMembers);
     setChannelData(channelData);
   }, [modalShow, userAdded]);
   const seeMembers = async () => {
-    const response = await client.get(`/channels/${receiverData.id}`);
-    const res = await client.get('/users');
+    const response = await api.get(`/channels/${receiverData.id}`);
+    const res = await api.get('/users');
     const allUsers = res.data.data;
     const getDateandTime = (dateToEdit) => {
       const newDateAndTime = new Date(dateToEdit);
@@ -46,17 +50,27 @@ function ChatHeader(props) {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (emailPattern.test(inputValueRef.current)) {
       try {
-        const userResponse = await client.get('/users');
+        const memberExists = channelMembers.find( member => {
+          return member.uid === inputValueRef.current
+        })
+        if(memberExists) {
+          setAlert({status: "error", message: "User is already a member!"})
+          return
+        }
+        const userResponse = await api.get('/users');
         const allUsers = userResponse.data.data;
         const userData = allUsers.find(
           (user) => user.email === inputValueRef.current
         );
-
-        const addMemberResponse = await client.post('/channel/add_member', {
+        if(!userData) {
+          setAlert({status: "error", message: "User does not exist!"})
+          return
+        }
+        const addMemberResponse = await api.post('/channel/add_member', {
           id: currentMessagedId,
           member_id: userData.id,
         });
-        const channelDataResponse = await client.get(
+        const channelDataResponse = await api.get(
           `/channels/${currentMessagedId}`
         );
         const rawMembersData = channelDataResponse.data.data.channel_members;
@@ -64,13 +78,14 @@ function ChatHeader(props) {
         const membersData = rawMembersId.map((id) => {
           return allUsers.find((user) => user.id === id);
         });
+        setAlert({status: "success", message: "User added successfully!"})
         setChannelMembers(membersData);
         setUserAdded(true);
       } catch (error) {
         console.log(error);
       }
     } else {
-      console.log('NOT AN EMAIL!');
+      setAlert({status: "error", message: "Invalid email format!"})
     }
   };
   const handleChange = (event) => {
@@ -81,7 +96,10 @@ function ChatHeader(props) {
     <>
       <Modal
         show={modalShow}
-        onHide={() => setModalShow(false)}
+        onHide={() => {
+          setAlert({status: "", message: ""})
+          setModalShow(false)
+        }}
         size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
@@ -144,20 +162,36 @@ function ChatHeader(props) {
               <div className="container-fluid d-flex p-0 gap-2">
                 <input
                   className="flex-grow-1 p-2"
-                  style={{ height: '20%' }}
+                  style={{ height: '2rem' }}
                   type="text"
                   onChange={handleChange}
                 ></input>
                 <button
                   className="btn btn-primary"
-                  style={{ width: '20%' }}
+                  style={{ width: '20%', height: "2rem", paddingTop: "0.2em" }}
                   onClick={addMember}
                 >
                   Add
                 </button>
               </div>
+              { !alert.status ? <></> :
+                   alert.status === "error" ?
+                   <div className="d-flex justify-content-center align-items-center gap-2 alert alert-danger p-2" role="alert" style={{fontWeight: "bold"}}>
+                    <i className="bi bi-x-circle-fill"></i>
+                    <div>
+                      {alert.message}
+                    </div>
+                  </div>
+                   :
+                   <div className="d-flex justify-content-center align-items-center gap-2 alert alert-success d-flex align-items-center p-2" role="alert" style={{fontWeight: "bold"}}>
+                    <i className="bi bi-check-circle-fill"></i>
+                    <div>
+                      {alert.message}
+                    </div>
+                  </div>       
+              }
               <ul
-                className="d-flex flex-column justify-content-center  align-items-start px-4 gap-3"
+                className="d-flex flex-column justify-content-center  align-items-start px-0 gap-3"
                 style={{ overflow: 'auto', maxHeight: '20rem' }}
               >
                 {channelMembers.map((member) => {

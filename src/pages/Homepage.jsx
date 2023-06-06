@@ -1,9 +1,7 @@
 import CredentialsPage from './CredentialsPage.jsx';
 import Header from '../components/Header.jsx';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import DashPage from './DashPage.jsx';
-import api from '../api.js';
-import people from '../assets/people.png';
 import slack from '../assets/slack.png';
 import team from '../assets/team.png';
 import Typewriter from 'typewriter-effect';
@@ -18,53 +16,6 @@ function Homepage(props) {
     setLoggedUser,
   } = props;
   const [email, setEmail] = useState('');
-
-  // const [loggedUser, setLoggedUser] = useState({});
-  // const [config, setConfig] = useState({
-  //   accessToken: '',
-  //   client: '',
-  //   expiry: '',
-  //   uid: '',
-  // });
-
-  // useEffect(() => {
-  //   setConfig(config);
-  // }, [isLoggedIn]);
-
-  // useEffect(() => {
-  //   const accessToken = localStorage.getItem('access-token');
-  //   const client = localStorage.getItem('client');
-  //   const expiry = localStorage.getItem('expiry');
-  //   const uid = localStorage.getItem('uid');
-
-  //   if (accessToken && client && expiry && uid) {
-  //     api.defaults.headers.common['access-token'] = accessToken;
-  //     api.defaults.headers.common.client = client;
-  //     api.defaults.headers.common.expiry = expiry;
-  //     api.defaults.headers.common.uid = uid;
-
-  //     api
-  //       .get('http://206.189.91.54/api/v1/auth/validate_token')
-  //       .then((response) => {
-  //         setLoggedUser(response.data.data);
-  //         setConfig({
-  //           accessToken: accessToken,
-  //           client: client,
-  //           expiry: expiry,
-  //           uid: uid,
-  //         });
-  //         setIsLoggedIn(true);
-  //       })
-  //       .catch((error) => {
-  //         console.error(error);
-  //         setIsLoggedIn(false);
-  //         setLoggedUser(null);
-  //       });
-  //   } else {
-  //     setIsLoggedIn(false);
-  //     setLoggedUser(null);
-  //   }
-  // }, []);
 
   return (
     <div
@@ -92,6 +43,7 @@ function Homepage(props) {
         <div
           className="container-fluid d-flex justify-content-center align-items-center h-100"
           style={{
+            zIndex: "1",
             backgroundImage: `url("${team}"), url("${slack}")`,
             backgroundPosition: '25% 25%, 50% 3%',
             backgroundSize: '500px, 200px',

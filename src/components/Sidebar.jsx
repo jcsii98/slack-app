@@ -2,7 +2,6 @@ import Channels from './Channels';
 import DirectMessages from './DirectMessages';
 export default function Sidebar(props) {
   const {
-    client,
     loggedUser,
     contacts,
     messageSuccess,
@@ -14,6 +13,7 @@ export default function Sidebar(props) {
     receiverClass,
     setReceiverClass,
     setMessageSuccess,
+    setAlert
   } = props;
 
   const sendMessage = () => {
@@ -22,48 +22,6 @@ export default function Sidebar(props) {
     setReceiverData({});
     setMessageSuccess(false);
   };
-
-  // async function handleClick () {
-  //   try {
-  //     // const response = await client.post(`messages`, {
-  //     //   receiver_id: "54",
-  //     //   receiver_class: "User",
-  //     //   body: "bumili ka ng toyo at suka sa tindahan ni aleng nena"
-  //     // })
-
-  //     const response = await client.get(`/users`)
-  //     const users = Object.values(response.data)[0]
-
-  //     const userEndpoints = users.map( user => {
-  //       return `/messages?receiver_id=${user.id}&receiver_class=User`
-  //     })
-
-  //     Promise.allSettled(userEndpoints.map(async (endpoint) =>
-  //       await client.get(endpoint)
-  //         .catch(error => {
-  //           console.log(error)
-  //         })
-  //     )).then( results => {
-  //       // const val = results.reduce( (filtered, result) => {
-  //       //   if(result.status === 'fulfilled' && result.value.data.data.length !== 0) {
-  //       //     filtered.push(Object.values(result.value.data.data))
-  //       //   }
-  //       //   return filtered
-  //       // },[])
-  //       // console.log(val)
-
-  //       // console.log(results)
-
-  //       // const filteredList = getFilteredList(users)
-
-  //       // console.log("filtered list: ")
-  //       // console.log(response)
-  //     }).catch( error => console.log(error) )
-
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
 
   return (
     <div
@@ -115,7 +73,7 @@ export default function Sidebar(props) {
         </ul>
         <Channels
           setConversation={setConversation}
-          client={client}
+          setAlert={setAlert}
           loggedUser={loggedUser}
           currentMessagedId={currentMessagedId}
           messageSuccess={messageSuccess}
@@ -126,7 +84,7 @@ export default function Sidebar(props) {
         />
         <DirectMessages
           setConversation={setConversation}
-          client={client}
+          setAlert={setAlert}
           loggedUser={loggedUser}
           contacts={contacts}
           messageSuccess={messageSuccess}
@@ -137,7 +95,6 @@ export default function Sidebar(props) {
           receiverClass={receiverClass}
           setReceiverClass={setReceiverClass}
         />
-        {/* <button onClick={testClick}>Test</button> */}
       </div>
     </div>
   );

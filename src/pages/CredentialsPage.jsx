@@ -11,6 +11,7 @@ function CredentialsPage(props) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [alert, setAlert] = useState('')
 
   const showSignup = () => {
     if (credentialsLabel === 'Login') {
@@ -18,6 +19,8 @@ function CredentialsPage(props) {
       setConfirmPasswordShow(true);
       setSubmitFunction(true);
     } else {
+      setError('')
+      setAlert('')
       setCredentialsLabel('Login');
       setConfirmPasswordShow(false);
       setSubmitFunction(false);
@@ -41,25 +44,16 @@ function CredentialsPage(props) {
 
         let localContacts = JSON.parse(localStorage.getItem('contacts'));
 
-        if (localContacts) {
-          const userContacts = localContacts.find((data) => {
-            return data.userId === userData.id;
-          });
-          if (!userContacts) {
-            localStorage.setItem(
-              'contacts',
-              JSON.stringify([
-                ...localContacts,
-                { userId: userData.id, contacts: [] },
-              ])
-            );
+        if(localContacts) {
+          const userContacts = localContacts[userData.id]
+          if(!userContacts) {
+            localStorage.setItem("contacts",JSON.stringify({...localContacts, [userData.id] : {} }))
           }
         } else {
-          localStorage.setItem(
-            'contacts',
-            JSON.stringify([{ userId: userData.id, contacts: [] }])
-          );
+          localStorage.setItem("contacts", JSON.stringify({ [userData.id] : {} }))
         }
+        
+        // 3422: "jose.saribong@email.com", 3466: "jsmith98@gmail.com"
 
         localStorage.setItem('access-token', response.headers['access-token']);
         localStorage.setItem('client', response.headers['client']);
@@ -81,9 +75,12 @@ function CredentialsPage(props) {
         password: password,
         password_confirmation: confirmPassword,
       });
+      console.log(response)
+      setError('')
+      setAlert('User registered successfully!')
     } catch (error) {
       console.error(error);
-      setError('User already exists. Please try again.'); // Set the error state
+      setError(error.response.data.errors?.full_messages[1] ?? error.response.data.errors?.full_messages[0]); // Set the error state
     }
   }
 
@@ -97,7 +94,7 @@ function CredentialsPage(props) {
   };
 
   return (
-    <div className="container-fluid w-25" style={{ marginRight: '10rem' }}>
+    <div className="container-fluid w-25" style={{ marginRight: '10rem', zIndex: "2" }}>
       <div className="container">
         <div className="container-fluid d-flex flex-column justify-content-center align-items-center p-3">
           <h1 className="mb-4">{credentialsLabel}</h1>
@@ -135,7 +132,7 @@ function CredentialsPage(props) {
                 />
               </div>
             )}
-            {error && <div className="text-danger mb-3">{error}</div>}
+            {error ? <div className="text-danger mb-3">{error}</div> : <div className='text-success mb-3'>{alert}</div>}
             <button type="submit" className="btn btn-primary container-fluid">
               {credentialsLabel}
             </button>

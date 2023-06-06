@@ -16,6 +16,8 @@ function DashboardCenter(props) {
     setReceiverData,
     receiverClass,
     setReceiverClass,
+    alert,
+    setAlert
   } = props;
 
   return (
@@ -40,6 +42,8 @@ function DashboardCenter(props) {
         setReceiverData={setReceiverData}
         receiverClass={receiverClass}
         setReceiverClass={setReceiverClass}
+        alert={alert}
+        setAlert={setAlert}
       />
     </div>
   );

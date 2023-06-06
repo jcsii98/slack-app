@@ -1,7 +1,6 @@
 import Sidebar from '../components/Sidebar';
 import DashboardCenter from '../components/DashboardCenter';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 function DashPage(props) {
   const { loggedUser } = props;
@@ -13,21 +12,11 @@ function DashPage(props) {
   const [currentMessagedId, setCurrentMessagedId] = useState(0);
   const [receiverData, setReceiverData] = useState({});
   const [receiverClass, setReceiverClass] = useState('');
-
-  // const client = axios.create({
-  //   baseURL: 'http://206.189.91.54/api/v1',
-  //   headers: {
-  //     'access-token': config.accessToken,
-  //     client: config.client,
-  //     expiry: config.expiry,
-  //     uid: config.uid,
-  //   },
-  // });
+  const [alert,setAlert] = useState({status: "", message: ""})
 
   return (
     <div className="container-fluid h-100 d-flex border-top p-0">
       <Sidebar
-        // client={client}
         loggedUser={loggedUser}
         contacts={contacts}
         setContacts={setContacts}
@@ -40,9 +29,9 @@ function DashPage(props) {
         receiverClass={receiverClass}
         setReceiverClass={setReceiverClass}
         setMessageSuccess={setMessageSuccess}
+        setAlert={setAlert}
       />
       <DashboardCenter
-        // client={client}
         loggedUser={loggedUser}
         contacts={contacts}
         setContacts={setContacts}
@@ -55,6 +44,8 @@ function DashPage(props) {
         setReceiverData={setReceiverData}
         receiverClass={receiverClass}
         setReceiverClass={setReceiverClass}
+        alert={alert}
+        setAlert={setAlert}
       />
     </div>
   );
