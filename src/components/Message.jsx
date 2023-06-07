@@ -42,8 +42,9 @@ export default function Message(props) {
                 <OverlayTrigger
                   placement="top"
                   delay={{ show: 250, hide: 400 }}
+                  style={{position: "fixed"}}
                   overlay={(
-                    <Tooltip id="button-tooltip">
+                    <Tooltip id="button-tooltip" style={{position: "fixed"}}>
                       {getDateandTime(message.created_at)}
                     </Tooltip>
                   )}
@@ -67,8 +68,9 @@ export default function Message(props) {
                 <OverlayTrigger
                   placement="top"
                   delay={{ show: 250, hide: 400 }}
+                  style={{position: "fixed"}}
                   overlay={(
-                    <Tooltip id="button-tooltip">
+                    <Tooltip id="button-tooltip" style={{position: "fixed"}}>
                       {getDateandTime(message.created_at)}
                     </Tooltip>
                   )}

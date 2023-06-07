@@ -2,6 +2,7 @@ import DirectMessagesHeader from './DirectMessagesHeader';
 import Message from './Message';
 import { useEffect, useRef, useState } from 'react';
 import api from '../api.js';
+import { Editor } from '@tinymce/tinymce-react';
 
 function Chat(props) {
   const {
@@ -46,12 +47,13 @@ function Chat(props) {
   }, [currentMessagedId]);
 
   const sendMessage = async () => {
+    console.log(message)
     setMessageSuccess(false);
     try {
       const response = await api.post('/messages', {
         receiver_id: receiverData.id,
         receiver_class: receiverClass,
-        body: message
+        body: editorRef.current.getContent()
       });
       if (response.statusText === 'OK') {
         setMessage('');
@@ -91,8 +93,15 @@ function Chat(props) {
     sendMessage();
   };
 
+  const editorRef = useRef(null);
+  const log = () => {
+    if (editorRef.current) {
+      console.log(editorRef.current.getContent());
+    }
+  };
+
   return (
-    <div className="container-fluid h-100 mh-100 p-2 bg-white d-flex flex-column gap-2">
+    <div className="border container-fluid  p-2 bg-white d-flex flex-column gap-2" style={{minHeight: "88vh", maxHeight: "88vh"}}>
       {currentMessagedId ? null : (
         <DirectMessagesHeader
           isLoadingRef={isLoadingRef}
@@ -122,7 +131,7 @@ function Chat(props) {
                 </div>
                 :
                 <div className="d-flex justify-content-center align-items-center gap-2 alert alert-primary d-flex align-items-center p-2" role="alert" style={{fontWeight: "bold"}}>
-                  <div class="spinner-border text-primary" role="status">
+                  <div className="spinner-border text-primary" role="status">
                   </div>
                   <div>
                     {alert.message}
@@ -131,10 +140,27 @@ function Chat(props) {
       }
       <Message conversation={conversation} loggedUser={loggedUser} />
       <div
-        className="container-fluid rounded-4 border border-dark d-flex flex-column px-3 py-2"
-        style={{ height: '18%', marginTop: 'auto' }}
+        className="container-fluid rounded-4 d-flex flex-column"
+        style={{ marginTop: '1.25%'}}
       >
-        <div
+        <Editor
+          apiKey='8qxl938uemtjr8dalduafih7pse3jscxhbe81kr1pz014wnw'
+          onInit={(evt, editor) => editorRef.current = editor}
+          init={{
+            placeholder: "Type your message here...",
+            statusbar: false,
+            branding: false,
+            menubar: false,
+            selector: 'textarea',
+            max_height: 500,
+            autoresize_overflow_padding: 5,
+            autoresize_bottom_margin: 1,
+            plugins: `powerpaste a11ychecker tinymcespellchecker linkchecker wordcount table advtable editimage autosave advlist anchor advcode image link lists media mediaembed searchreplace visualblocks emoticons autoresize`,
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+          }}
+        />
+      {/* <button onClick={log}>Log editor content</button> */}
+        {/* <div
           className="d-flex border-bottom gap-3 pb-1"
           style={{ fontSize: '1.2rem' }}
         >
@@ -159,11 +185,11 @@ function Chat(props) {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
-        </form>
+        </form> */}
         <div className="d-flex justify-content-end px-3">
           <i
             className="bi bi-send-fill"
-            style={{ rotate: '45deg' }}
+            style={{ rotate: '45deg', position: "absolute", bottom: "1.5%", zIndex: "2" }}
             onClick={handleChatSubmit}
           ></i>
         </div>
