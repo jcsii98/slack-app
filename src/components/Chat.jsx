@@ -25,6 +25,7 @@ function Chat(props) {
   const [message, setMessage] = useState('');
   const isLoadingRef = useRef(false)
   const firstMountRef = useRef(true);
+  const [placeholderText,setPlaceholderText] = useState('Type your message here...')
 
   useEffect(() => {
     const updateReceiver = async () => {
@@ -45,6 +46,10 @@ function Chat(props) {
     }
     firstMountRef.current = true;
   }, [currentMessagedId]);
+
+  useEffect(() => {
+    setMessage('')
+  }, [conversation])
 
   const sendMessage = async () => {
     console.log(message)
@@ -147,6 +152,7 @@ function Chat(props) {
           apiKey='8qxl938uemtjr8dalduafih7pse3jscxhbe81kr1pz014wnw'
           onInit={(evt, editor) => editorRef.current = editor}
           init={{
+            value: {message},
             placeholder: "Type your message here...",
             statusbar: false,
             branding: false,
