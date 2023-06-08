@@ -50,9 +50,7 @@ function Chat(props) {
     }, [currentMessagedId]);
 
     useEffect(() => {
-        console.log('conversation updated!');
         setMessage('');
-        console.log(message);
         if (editorRef.current) editorRef.current.setContent('');
     }, [conversation]);
 
@@ -184,7 +182,7 @@ function Chat(props) {
                         min_height: 150,
                         max_height: 500,
                         width: '100%',
-                        max_width: '100%',
+                        max_width: 100,
                         autoresize_overflow_padding: 5,
                         autoresize_bottom_margin: 5,
                         plugins: `powerpaste a11ychecker tinymcespellchecker linkchecker wordcount table advtable editimage autosave advlist anchor advcode image link lists media mediaembed searchreplace visualblocks emoticons autoresize`,
