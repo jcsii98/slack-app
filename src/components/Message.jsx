@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react"
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import parse from 'html-react-parser';
 
 export default function Message(props) {
   const { conversation,loggedUser } = props
@@ -41,7 +42,7 @@ export default function Message(props) {
                 <div style={{fontSize: "1.2rem",fontWeight: "bold"}}>{message.sender.email}</div>
                 <OverlayTrigger
                   placement="top"
-                  delay={{ show: 250, hide: 400 }}
+                  delay={{ show: 250, hide: 350 }}
                   style={{position: "fixed"}}
                   overlay={(
                     <Tooltip id="button-tooltip" style={{position: "fixed"}}>
@@ -52,8 +53,8 @@ export default function Message(props) {
                   <div style={{fontSize: "0.9rem"}}>{getHourAndMinutes(message.created_at)}</div>
                 </OverlayTrigger>
               </div>
-              <div className="border rounded-4 p-3" style={{whiteSpace: "pre-wrap", backgroundColor: "#8AB8BC", color: "black", marginLeft: "auto"}}>
-                {message.body}
+              <div className="message-container border rounded-4 p-3" style={{backgroundColor: "#8AB8BC", color: "black", marginLeft: "auto"}}>
+                {parse(message.body)}
               </div>
             </div>
             <i className="bi bi-person-circle" style={{fontSize: "3rem"}}></i>
@@ -67,7 +68,7 @@ export default function Message(props) {
                 <div style={{fontSize: "1.2rem",fontWeight: "bold"}}>{message.sender.email}</div>
                 <OverlayTrigger
                   placement="top"
-                  delay={{ show: 250, hide: 400 }}
+                  delay={{ show: 250, hide: 350 }}
                   style={{position: "fixed"}}
                   overlay={(
                     <Tooltip id="button-tooltip" style={{position: "fixed"}}>
@@ -78,8 +79,8 @@ export default function Message(props) {
                   <div style={{fontSize: "0.9rem"}}>{getHourAndMinutes(message.created_at)}</div>
                 </OverlayTrigger>
               </div>
-              <div className="border rounded-4 p-3" style={{whiteSpace: "pre-wrap", backgroundColor: "#8AB8BC", color: "black", marginRight: "auto"}}>
-                {message.body}
+              <div className="message-container border rounded-4 p-3" style={{backgroundColor: "#8AB8BC", color: "black", marginRight: "auto"}}>
+                {parse(message.body)}
               </div>
             </div>
             <div ref={bottomRef}/>

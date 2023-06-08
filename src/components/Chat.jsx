@@ -25,7 +25,6 @@ function Chat(props) {
   const [message, setMessage] = useState('');
   const isLoadingRef = useRef(false)
   const firstMountRef = useRef(true);
-  const [placeholderText,setPlaceholderText] = useState('Type your message here...')
 
   useEffect(() => {
     const updateReceiver = async () => {
@@ -48,7 +47,10 @@ function Chat(props) {
   }, [currentMessagedId]);
 
   useEffect(() => {
+    console.log("conversation updated!")
     setMessage('')
+    console.log(message)
+    tinyMCE.activeEditor.setContent("");
   }, [conversation])
 
   const sendMessage = async () => {
@@ -146,10 +148,10 @@ function Chat(props) {
       <Message conversation={conversation} loggedUser={loggedUser} />
       <div
         className="container-fluid rounded-4 d-flex flex-column"
-        style={{ marginTop: '1.25%'}}
+        style={{marginTop: '1.25%'}}
       >
         <Editor
-          apiKey='8qxl938uemtjr8dalduafih7pse3jscxhbe81kr1pz014wnw'
+          apiKey={import.meta.env.VITE_TINYMCE_KEY}
           onInit={(evt, editor) => editorRef.current = editor}
           init={{
             value: {message},
@@ -157,41 +159,14 @@ function Chat(props) {
             statusbar: false,
             branding: false,
             menubar: false,
-            selector: 'textarea',
+            min_height: 150,
             max_height: 500,
             autoresize_overflow_padding: 5,
-            autoresize_bottom_margin: 1,
+            autoresize_bottom_margin: 5,
             plugins: `powerpaste a11ychecker tinymcespellchecker linkchecker wordcount table advtable editimage autosave advlist anchor advcode image link lists media mediaembed searchreplace visualblocks emoticons autoresize`,
             toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
           }}
         />
-      {/* <button onClick={log}>Log editor content</button> */}
-        {/* <div
-          className="d-flex border-bottom gap-3 pb-1"
-          style={{ fontSize: '1.2rem' }}
-        >
-          <i className="bi bi-type-bold"></i>
-          <i className="bi bi-type-italic"></i>
-          <i className="bi bi-type-strikethrough"></i>|
-          <i className="bi bi-link-45deg"></i>|<i className="bi bi-list-ol"></i>
-          <i className="bi bi-list-ul"></i>|
-          <i className="bi bi-blockquote-left"></i>|
-          <i className="bi bi-code-slash"></i>
-          <i className="bi bi-file-earmark-code"></i>
-        </div>
-        <form
-          onSubmit={handleChatSubmit}
-          className="flex-grow-1 d-flex align-items-start"
-        >
-          <input
-            className="container-fluid h-100"
-            style={{ outline: 'none', border: 'none' }}
-            placeholder="Type a message..."
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-        </form> */}
         <div className="d-flex justify-content-end px-3">
           <i
             className="bi bi-send-fill"
