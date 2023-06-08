@@ -18,6 +18,7 @@
 .message-container p{
     max-width: 75ch;
     word-wrap:break-word;
+    margin-bottom: 0;
 }
 
 .message-container img {

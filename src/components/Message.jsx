@@ -8,9 +8,7 @@ export default function Message(props) {
     const bottomRef = useRef(null);
 
     useEffect(() => {
-        console.log(loggedUser);
         bottomRef.current?.scrollIntoView({behavior: 'smooth'});
-        console.log(conversation);
     }, [conversation]);
 
     const getHourAndMinutes = (dateToEdit) => {
@@ -77,6 +75,7 @@ export default function Message(props) {
                             <div
                                 className='message-container border rounded-4 p-3'
                                 style={{
+                                    padding: "1em",
                                     backgroundColor: '#8AB8BC',
                                     color: 'black',
                                     marginLeft: 'auto',
@@ -130,8 +129,9 @@ export default function Message(props) {
                                 </OverlayTrigger>
                             </div>
                             <div
-                                className='message-container border rounded-4 p-3'
+                                className='message-container border rounded-4'
                                 style={{
+                                    padding: "1em",
                                     backgroundColor: '#8AB8BC',
                                     color: 'black',
                                     marginRight: 'auto',

@@ -16,7 +16,6 @@ function ChatHeader(props) {
     useEffect(() => {
         setChannelMembers(channelMembers);
         setChannelData(channelData);
-        console.log(alert);
     }, [modalShow, userAdded]);
 
     const seeMembers = async () => {
