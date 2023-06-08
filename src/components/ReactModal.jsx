@@ -128,7 +128,7 @@ export default function ReactModal(props) {
       centered
       className='p-4'
     >
-      <Modal.Header closeButton style={{border: "none"}}>
+      <Modal.Header style={{border: "none"}}>
         <Modal.Title id="contained-modal-title-vcenter">
           Create Channel
         </Modal.Title>

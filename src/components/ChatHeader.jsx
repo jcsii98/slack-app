@@ -126,6 +126,7 @@ function ChatHeader(props) {
                     className='d-flex justify-content-center align-items-center gap-2 d-flex align-items-center p-3'
                     role='alert'
                     style={{
+                        zIndex: "3",
                         fontWeight: 'bold',
                         position: 'absolute',
                         left: '45%',

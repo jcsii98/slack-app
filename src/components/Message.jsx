@@ -1,6 +1,7 @@
 import {useEffect, useRef} from 'react';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import parse from 'html-react-parser';
 
 export default function Message(props) {
     const {conversation, loggedUser} = props;
@@ -31,7 +32,7 @@ export default function Message(props) {
 
     return (
         <div
-            className='border-msg container-fluid flex-grow-1'
+            className='container-fluid flex-grow-1'
             style={{overflow: 'auto', maxHeight: '40rem'}}
         >
             {conversation?.length === 0 && <></>}
@@ -57,7 +58,7 @@ export default function Message(props) {
                                 </div>
                                 <OverlayTrigger
                                     placement='top'
-                                    delay={{show: 250, hide: 400}}
+                                    delay={{show: 250, hide: 350}}
                                     style={{position: 'fixed'}}
                                     overlay={
                                         <Tooltip
@@ -74,15 +75,14 @@ export default function Message(props) {
                                 </OverlayTrigger>
                             </div>
                             <div
-                                className='border rounded-4 p-3'
+                                className='message-container border rounded-4 p-3'
                                 style={{
-                                    whiteSpace: 'pre-wrap',
                                     backgroundColor: '#8AB8BC',
                                     color: 'black',
                                     marginLeft: 'auto',
                                 }}
                             >
-                                {message.body}
+                                {parse(message.body)}
                             </div>
                         </div>
                         <i
@@ -113,7 +113,7 @@ export default function Message(props) {
                                 </div>
                                 <OverlayTrigger
                                     placement='top'
-                                    delay={{show: 250, hide: 400}}
+                                    delay={{show: 250, hide: 350}}
                                     style={{position: 'fixed'}}
                                     overlay={
                                         <Tooltip
@@ -130,15 +130,14 @@ export default function Message(props) {
                                 </OverlayTrigger>
                             </div>
                             <div
-                                className='border rounded-4 p-3'
+                                className='message-container border rounded-4 p-3'
                                 style={{
-                                    whiteSpace: 'pre-wrap',
                                     backgroundColor: '#8AB8BC',
                                     color: 'black',
                                     marginRight: 'auto',
                                 }}
                             >
-                                {message.body}
+                                {parse(message.body)}
                             </div>
                         </div>
                         <div ref={bottomRef} />
