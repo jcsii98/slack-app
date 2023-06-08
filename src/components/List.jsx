@@ -38,9 +38,10 @@ export default function List(props) {
                             <button
                                 className='sidebar-btn bg-transparent nav-link border-0'
                                 style={{color: 'white'}}
-                                onClick={() =>
-                                    handleButtonClick(item.id ?? receiverID)
-                                }
+                                onClick={() => {
+                                    handleButtonClick();
+                                    handleClick(item.id ?? receiverID);
+                                }}
                             >
                                 {title === 'Channels' ? (
                                     <i
