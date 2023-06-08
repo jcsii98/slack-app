@@ -82,6 +82,7 @@ body {
     padding-left: 5px !important;
     padding-right: 5px !important;
 }
+
 /* button-styles */
 .btn-primary {
     cursor: pointer;
@@ -103,7 +104,10 @@ body {
 .text-btn {
     color: inherit;
 }
-
+.active button {
+    background-color: #e8e8e8;
+    color: #000000 !important;
+}
 /* margin-classes */
 .mb-4 {
     margin-bottom: 16px;
@@ -116,13 +120,6 @@ body {
 }
 .main-form {
     display: grid;
-}
-.main-input {
-    color: black !important;
-    width: 50%;
-    background: white;
-    border: none;
-    border-bottom: 1px solid black;
 }
 
 /* main-header */
@@ -176,10 +173,19 @@ body {
     border-radius: 5px;
     padding: 5px;
 }
-
+.sidebar-btn {
+    display: flex !important;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+}
+.sidebar-btn-label {
+    margin-left: 1rem;
+}
 .nav-link {
     text-decoration: none !important;
     color: inherit;
+    text-align: start;
 }
 .nav-item {
     color: inherit;
@@ -220,7 +226,7 @@ body {
 .input-field {
     position: relative;
     height: 65px;
-    border-bottom: 1px solid #84919a;
+    border-bottom: 1px solid rgb(222, 226, 230);
     display: flex;
     align-items: center;
     font-family: inherit;

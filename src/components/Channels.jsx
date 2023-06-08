@@ -14,6 +14,8 @@ export default function Channels(props) {
         setReceiverClass,
         setCurrentMessagedId,
         setAlert,
+        activeButton,
+        handleButtonClick,
     } = props;
     const [modalShow, setModalShow] = useState(false);
     const [data, setData] = useState([]);
@@ -68,6 +70,8 @@ export default function Channels(props) {
                     title={'Channels'}
                     data={data}
                     callback={setModalShow}
+                    activeButton={activeButton}
+                    handleButtonClick={handleButtonClick}
                 />
             )}
         </div>

@@ -1,5 +1,13 @@
 export default function List(props) {
-    const {handleClick, title, classType, data, callback} = props;
+    const {
+        handleClick,
+        title,
+        classType,
+        data,
+        callback,
+        activeButton,
+        handleButtonClick,
+    } = props;
 
     return (
         <div className='padding-0 d-flex flex-column justify-content-center p-0'>
@@ -18,30 +26,36 @@ export default function List(props) {
                 {data.map((item) => {
                     const receiverID = item[0];
                     const receiverName = item[1];
+                    const isActive = activeButton === (item.id ?? receiverID);
+
                     return (
                         <li
                             key={item.id ?? receiverID}
-                            className='padding-lr-1 nav-link sidebar-item d-flex gap-3 justify-content-start align-items-center'
+                            className={`padding-lr-1 nav-link sidebar-item d-flex gap-3 justify-content-start align-items-center ${
+                                isActive ? 'active' : ''
+                            }`}
                         >
-                            {title === 'Channels' ? (
-                                <i
-                                    className='bi bi-people-fill'
-                                    style={{fontSize: '1.5rem'}}
-                                />
-                            ) : (
-                                <i
-                                    className='bi bi-person-circle'
-                                    style={{fontSize: '1.7rem'}}
-                                ></i>
-                            )}
                             <button
-                                className='bg-transparent nav-link border-0'
+                                className='sidebar-btn bg-transparent nav-link border-0'
                                 style={{color: 'white'}}
                                 onClick={() =>
-                                    handleClick(item.id ?? receiverID)
+                                    handleButtonClick(item.id ?? receiverID)
                                 }
                             >
-                                {item.name ?? receiverName}
+                                {title === 'Channels' ? (
+                                    <i
+                                        className='bi bi-people-fill'
+                                        style={{fontSize: '1.5rem'}}
+                                    />
+                                ) : (
+                                    <i
+                                        className='bi bi-person-circle'
+                                        style={{fontSize: '1.7rem'}}
+                                    ></i>
+                                )}
+                                <div className='sidebar-btn-label'>
+                                    {item.name ?? receiverName}
+                                </div>
                             </button>
                         </li>
                     );
