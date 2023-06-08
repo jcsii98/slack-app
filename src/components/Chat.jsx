@@ -3,6 +3,7 @@ import Message from './Message';
 import {useEffect, useRef, useState} from 'react';
 import api from '../api.js';
 import {Editor} from '@tinymce/tinymce-react';
+
 function Chat(props) {
     const {
         conversation,
@@ -19,11 +20,13 @@ function Chat(props) {
         alert,
         setAlert,
     } = props;
+
     // message = receiver_id, receiver_class, body
     const [message, setMessage] = useState('');
     const isLoadingRef = useRef(false);
     const firstMountRef = useRef(true);
     const editorRef = useRef(null);
+
     useEffect(() => {
         const updateReceiver = async () => {
             try {
@@ -45,12 +48,14 @@ function Chat(props) {
         }
         firstMountRef.current = true;
     }, [currentMessagedId]);
+
     useEffect(() => {
         console.log('conversation updated!');
         setMessage('');
         console.log(message);
         if (editorRef.current) editorRef.current.setContent('');
     }, [conversation]);
+
     const sendMessage = async () => {
         console.log(message);
         setMessageSuccess(false);
@@ -67,7 +72,9 @@ function Chat(props) {
                         const localContacts = JSON.parse(
                             localStorage.getItem('contacts')
                         );
+
                         let updatedContact = localContacts[loggedUser.id];
+
                         if (!updatedContact[receiverData.id]) {
                             updatedContact = {
                                 ...updatedContact,
@@ -113,7 +120,7 @@ function Chat(props) {
     return (
         <div
             className='border container-fluid  p-2 bg-white d-flex flex-column gap-2'
-            style={{minHeight: '88vh', maxHeight: '88vh'}}
+            style={{minHeight: '88vh', maxHeight: '88vh', minWidth: '0'}}
         >
             {currentMessagedId ? null : (
                 <DirectMessagesHeader
@@ -176,6 +183,8 @@ function Chat(props) {
                         menubar: false,
                         min_height: 150,
                         max_height: 500,
+                        width: '100%',
+                        max_width: '100%',
                         autoresize_overflow_padding: 5,
                         autoresize_bottom_margin: 5,
                         plugins: `powerpaste a11ychecker tinymcespellchecker linkchecker wordcount table advtable editimage autosave advlist anchor advcode image link lists media mediaembed searchreplace visualblocks emoticons autoresize`,
