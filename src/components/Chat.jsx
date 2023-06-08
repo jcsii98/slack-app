@@ -25,6 +25,7 @@ function Chat(props) {
   const [message, setMessage] = useState('');
   const isLoadingRef = useRef(false)
   const firstMountRef = useRef(true);
+  const editorRef = useRef(null);
 
   useEffect(() => {
     const updateReceiver = async () => {
@@ -50,7 +51,7 @@ function Chat(props) {
     console.log("conversation updated!")
     setMessage('')
     console.log(message)
-    tinyMCE.activeEditor.setContent("");
+    if(editorRef.current) editorRef.current.setContent("");
   }, [conversation])
 
   const sendMessage = async () => {
@@ -99,14 +100,6 @@ function Chat(props) {
     if(isLoadingRef.current.value === true) return
     sendMessage();
   };
-
-  const editorRef = useRef(null);
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
-  };
-
   return (
     <div className="border container-fluid  p-2 bg-white d-flex flex-column gap-2" style={{minHeight: "88vh", maxHeight: "88vh"}}>
       {currentMessagedId ? null : (
