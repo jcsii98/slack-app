@@ -1,5 +1,6 @@
 import Channels from './Channels';
 import DirectMessages from './DirectMessages';
+import {useState} from 'react';
 export default function Sidebar(props) {
     const {
         loggedUser,
@@ -15,7 +16,10 @@ export default function Sidebar(props) {
         setMessageSuccess,
         setAlert,
     } = props;
-
+    const [activeButton, setActiveButton] = useState(null);
+    const handleButtonClick = (buttonId) => {
+        setActiveButton(buttonId);
+    };
     const sendMessage = () => {
         setConversation([]);
         setCurrentMessagedId(0);
@@ -56,23 +60,58 @@ export default function Sidebar(props) {
             </div>
             <div className='d-flex flex-column'>
                 <ul className='nav-tabs container-fluid d-flex flex-column gap-1 pb-3 px-4 m-0'>
-                    <li className='padding-lr-1 nav-link sidebar-item d-flex gap-3 justify-content-start align-items-center'>
-                        <i className='bi bi-chat-text'></i>
-                        <a className='nav-link border-0' href='#'>
-                            Threads
-                        </a>
+                    <li
+                        className={`padding-lr-1 nav-link sidebar-item d-flex gap-3 justify-content-start align-items-center ${
+                            activeButton === 'threads' ? 'active' : ''
+                        }`}
+                    >
+                        <button
+                            type='button'
+                            className='sidebar-btn bg-transparent nav-link border-0'
+                            style={{color: 'white'}}
+                            onClick={() => handleButtonClick('threads')}
+                        >
+                            <i className='bi bi-chat-text'></i>
+                            <div className='sidebar-btn-label'>Threads</div>
+                        </button>
                     </li>
-                    <li className='padding-lr-1 nav-link sidebar-item d-flex gap-3 justify-content-start align-items-center'>
-                        <i className='bi bi-at'></i>
-                        <a className='nav-link border-0' href='#'>
-                            Mentions & reactions
-                        </a>
+                    <li
+                        className={`padding-lr-1 nav-link sidebar-item d-flex gap-3 justify-content-start align-items-center ${
+                            activeButton === 'mentions' ? 'active' : ''
+                        }`}
+                    >
+                        <button
+                            type='button'
+                            className='sidebar-btn bg-transparent nav-link border-0'
+                            style={{color: 'white'}}
+                            onClick={() => handleButtonClick('mentions')}
+                        >
+                            <i className='bi bi-at'></i>
+
+                            <div className='sidebar-btn-label'>
+                                Mentions & reactions
+                            </div>
+                        </button>
                     </li>
-                    <li className='padding-lr-1 nav-link sidebar-item d-flex gap-3 justify-content-start align-items-center'>
-                        <i className='bi bi-send' style={{rotate: '45deg'}}></i>
-                        <a className='nav-link border-0' href='#'>
-                            Drafts & sent
-                        </a>
+                    <li
+                        className={`padding-lr-1 nav-link sidebar-item d-flex gap-3 justify-content-start align-items-center ${
+                            activeButton === 'drafts' ? 'active' : ''
+                        }`}
+                    >
+                        <button
+                            type='button'
+                            className='sidebar-btn bg-transparent nav-link border-0'
+                            style={{color: 'white'}}
+                            onClick={() => handleButtonClick('drafts')}
+                        >
+                            <i
+                                className='bi bi-send'
+                                style={{rotate: '45deg'}}
+                            ></i>
+                            <div className='sidebar-btn-label'>
+                                Drafts & sent
+                            </div>
+                        </button>
                     </li>
                 </ul>
                 <Channels
@@ -85,6 +124,8 @@ export default function Sidebar(props) {
                     setReceiverData={setReceiverData}
                     setReceiverClass={setReceiverClass}
                     setCurrentMessagedId={setCurrentMessagedId}
+                    activeButton={activeButton}
+                    handleButtonClick={handleButtonClick}
                 />
                 <DirectMessages
                     setConversation={setConversation}
@@ -98,6 +139,8 @@ export default function Sidebar(props) {
                     setReceiverData={setReceiverData}
                     receiverClass={receiverClass}
                     setReceiverClass={setReceiverClass}
+                    activeButton={activeButton}
+                    handleButtonClick={handleButtonClick}
                 />
             </div>
         </div>
