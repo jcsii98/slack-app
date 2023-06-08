@@ -1,25 +1,25 @@
 import DirectMessagesHeader from './DirectMessagesHeader';
 import Message from './Message';
-import {useEffect, useRef, useState} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import api from '../api.js';
-import {Editor} from '@tinymce/tinymce-react';
+import { Editor } from '@tinymce/tinymce-react';
 
 function Chat(props) {
-    const {
-        conversation,
-        client,
-        loggedUser,
-        setContacts,
-        setMessageSuccess,
-        currentMessagedId,
-        setCurrentMessagedId,
-        receiverData,
-        setReceiverData,
-        receiverClass,
-        setReceiverClass,
-        alert,
-        setAlert,
-    } = props;
+  const {
+    conversation,
+    client,
+    loggedUser,
+    setContacts,
+    setMessageSuccess,
+    currentMessagedId,
+    setCurrentMessagedId,
+    receiverData,
+    setReceiverData,
+    receiverClass,
+    setReceiverClass,
+    alert,
+    setAlert
+  } = props;
 
   // message = receiver_id, receiver_class, body
   const [message, setMessage] = useState('');
@@ -27,27 +27,25 @@ function Chat(props) {
   const firstMountRef = useRef(true);
   const editorRef = useRef(null);
 
-    useEffect(() => {
-        const updateReceiver = async () => {
-            try {
-                const response = await api.get('/users');
-                const users = response.data.data;
-                const userData = users.find(
-                    (user) => user.id === currentMessagedId
-                );
-                setReceiverData({id: userData.id, name: userData.email});
-            } catch (error) {
-                console.log(error);
-                setAlert({status: 'error', message: error});
-            }
-        };
-        if (!firstMountRef) {
-            if (receiverClass !== null) {
-                updateReceiver();
-            }
-        }
-        firstMountRef.current = true;
-    }, [currentMessagedId]);
+  useEffect(() => {
+    const updateReceiver = async () => {
+      try {
+        const response = await api.get('/users');
+        const users = response.data.data;
+        const userData = users.find((user) => user.id === currentMessagedId);
+        setReceiverData({ id: userData.id, name: userData.email });
+      } catch (error) {
+        console.log(error)
+        setAlert({status: "error", message: error})
+      }
+    };
+    if (!firstMountRef) {
+      if (receiverClass !== null) {
+        updateReceiver();
+      }
+    }
+    firstMountRef.current = true;
+  }, [currentMessagedId]);
 
   useEffect(() => {
     console.log("conversation updated!")
@@ -71,33 +69,27 @@ function Chat(props) {
           setContacts(() => {
             const localContacts = JSON.parse(localStorage.getItem('contacts'));
 
-                        let updatedContact = localContacts[loggedUser.id];
+            let updatedContact = localContacts[loggedUser.id]
 
-                        if (!updatedContact[receiverData.id]) {
-                            updatedContact = {
-                                ...updatedContact,
-                                [receiverData.id]: receiverData.email,
-                            };
-                        }
-                        localContacts[loggedUser.id] = updatedContact;
-                        localStorage.setItem(
-                            'contacts',
-                            JSON.stringify(localContacts)
-                        );
-                        return localContacts;
-                    });
-                }
-                await setCurrentMessagedId(receiverData.id);
-                setMessageSuccess(true);
-            } else {
-                console.log(error);
-                setAlert({status: 'error', message: 'Failed to send message.'});
+            if(!updatedContact[receiverData.id]) {
+              updatedContact = { ...updatedContact, [receiverData.id] : receiverData.email }
             }
-        } catch (error) {
-            console.log(error);
-            setAlert({status: 'error', message: error});
+            localContacts[loggedUser.id] = updatedContact
+            localStorage.setItem("contacts",JSON.stringify(localContacts))
+            return localContacts
+          })
         }
-    };
+        await setCurrentMessagedId(receiverData.id)
+        setMessageSuccess(true)
+      } else {
+        console.log(error)
+        setAlert({status: "error", message: "Failed to send message."})
+      }
+    } catch (error) {
+      console.log(error)
+      setAlert({status: "error", message: error})
+    }
+  };
 
   const onEnterPress = (event) => {
     if(event.keyCode == 13 && event.shiftKey == false) {
@@ -137,26 +129,14 @@ function Chat(props) {
                 <div>
                   {alert.message}
                 </div>
-            ) : alert.status === 'success' ? (
-                <div
-                    className='d-flex justify-content-center align-items-center gap-2 alert alert-success d-flex align-items-center p-2'
-                    role='alert'
-                    style={{fontWeight: 'bold'}}
-                >
-                    <i className='bi bi-check-circle-fill'></i>
-                    <div>{alert.message}</div>
-                </div>
-            ) : (
-                <div
-                    className='d-flex justify-content-center align-items-center gap-2 alert alert-primary d-flex align-items-center p-2'
-                    role='alert'
-                    style={{fontWeight: 'bold'}}
-                >
-                    <div
-                        className='spinner-border text-primary'
-                        role='status'
-                    ></div>
-                    <div>{alert.message}</div>
+              </div>
+              :
+              alert.status === "success" ?
+                <div className="d-flex justify-content-center align-items-center gap-2 alert alert-success d-flex align-items-center p-2" role="alert" style={{fontWeight: "bold"}}>
+                  <i className="bi bi-check-circle-fill"></i>
+                  <div>
+                    {alert.message}
+                  </div>
                 </div>
                 :
                 <div className="d-flex justify-content-center align-items-center gap-2 alert alert-primary d-flex align-items-center p-2" role="alert" style={{fontWeight: "bold"}}>
