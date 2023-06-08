@@ -6,7 +6,7 @@ export default function List(props) {
         data,
         callback,
         activeButton,
-        handleButtonClick,
+        handleButtonEffect,
     } = props;
 
     return (
@@ -39,7 +39,7 @@ export default function List(props) {
                                 className='sidebar-btn bg-transparent nav-link border-0'
                                 style={{color: 'white'}}
                                 onClick={() => {
-                                    handleButtonClick();
+                                    handleButtonEffect(item.id ?? receiverID);
                                     handleClick(item.id ?? receiverID);
                                 }}
                             >

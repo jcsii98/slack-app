@@ -15,7 +15,7 @@ export default function Channels(props) {
         setCurrentMessagedId,
         setAlert,
         activeButton,
-        handleButtonClick,
+        handleButtonEffect,
     } = props;
     const [modalShow, setModalShow] = useState(false);
     const [data, setData] = useState([]);
@@ -71,7 +71,7 @@ export default function Channels(props) {
                     data={data}
                     callback={setModalShow}
                     activeButton={activeButton}
-                    handleButtonClick={handleButtonClick}
+                    handleButtonEffect={handleButtonEffect}
                 />
             )}
         </div>

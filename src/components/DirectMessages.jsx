@@ -15,7 +15,7 @@ export default function DirectMessages(props) {
         setReceiverClass,
         setAlert,
         activeButton,
-        handleButtonClick,
+        handleButtonEffect,
     } = props;
     const [data, setData] = useState([]);
 
@@ -61,7 +61,7 @@ export default function DirectMessages(props) {
                     classType={'d-none'}
                     data={data}
                     activeButton={activeButton}
-                    handleButtonClick={handleButtonClick}
+                    handleButtonEffect={handleButtonEffect}
                 />
             )}
         </div>

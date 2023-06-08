@@ -17,7 +17,7 @@ export default function Sidebar(props) {
         setAlert,
     } = props;
     const [activeButton, setActiveButton] = useState(null);
-    const handleButtonClick = (buttonId) => {
+    const handleButtonEffect = (buttonId) => {
         setActiveButton(buttonId);
     };
     const sendMessage = () => {
@@ -69,7 +69,7 @@ export default function Sidebar(props) {
                             type='button'
                             className='sidebar-btn bg-transparent nav-link border-0'
                             style={{color: 'white'}}
-                            onClick={() => handleButtonClick('threads')}
+                            onClick={() => handleButtonEffect('threads')}
                         >
                             <i className='bi bi-chat-text'></i>
                             <div className='sidebar-btn-label'>Threads</div>
@@ -84,7 +84,7 @@ export default function Sidebar(props) {
                             type='button'
                             className='sidebar-btn bg-transparent nav-link border-0'
                             style={{color: 'white'}}
-                            onClick={() => handleButtonClick('mentions')}
+                            onClick={() => handleButtonEffect('mentions')}
                         >
                             <i className='bi bi-at'></i>
 
@@ -102,7 +102,7 @@ export default function Sidebar(props) {
                             type='button'
                             className='sidebar-btn bg-transparent nav-link border-0'
                             style={{color: 'white'}}
-                            onClick={() => handleButtonClick('drafts')}
+                            onClick={() => handleButtonEffect('drafts')}
                         >
                             <i
                                 className='bi bi-send'
@@ -125,7 +125,7 @@ export default function Sidebar(props) {
                     setReceiverClass={setReceiverClass}
                     setCurrentMessagedId={setCurrentMessagedId}
                     activeButton={activeButton}
-                    handleButtonClick={handleButtonClick}
+                    handleButtonEffect={handleButtonEffect}
                 />
                 <DirectMessages
                     setConversation={setConversation}
@@ -140,7 +140,7 @@ export default function Sidebar(props) {
                     receiverClass={receiverClass}
                     setReceiverClass={setReceiverClass}
                     activeButton={activeButton}
-                    handleButtonClick={handleButtonClick}
+                    handleButtonEffect={handleButtonEffect}
                 />
             </div>
         </div>
