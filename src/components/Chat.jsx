@@ -108,7 +108,9 @@ function Chat(props) {
     sendMessage();
   };
   return (
-    <div className="border container-fluid  p-2 bg-white d-flex flex-column gap-2" style={{minHeight: "88vh", maxHeight: "88vh"}}>
+    <div className="border container-fluid  p-2 bg-white d-flex flex-column gap-2"
+      style={{minHeight: "88vh", maxHeight: "88vh", minWidth: "0"}}
+    >
       {currentMessagedId ? null : (
         <DirectMessagesHeader
           isLoadingRef={isLoadingRef}
@@ -161,6 +163,8 @@ function Chat(props) {
             menubar: false,
             min_height: 150,
             max_height: 500,
+            width: "100%",
+            max_width: "100%",
             autoresize_overflow_padding: 5,
             autoresize_bottom_margin: 5,
             plugins: `powerpaste a11ychecker tinymcespellchecker linkchecker wordcount table advtable editimage autosave advlist anchor advcode image link lists media mediaembed searchreplace visualblocks emoticons autoresize`,

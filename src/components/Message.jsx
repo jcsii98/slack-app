@@ -31,13 +31,13 @@ export default function Message(props) {
   }
 
   return (
-    <div className="container-fluid flex-grow-1" style={{overflow: "auto", maxHeight: "40rem"}}>
+    <div className="container-fluid flex-grow-1" style={{overflow: "auto", maxHeight: "40rem", maxWidth: "100%"}}>
       {conversation?.length === 0 && <></>}
       {conversation?.map( message => {
         return(
           message.sender.email === loggedUser.email ?
-          <div key={message.id} className="d-flex flex-row justify-content-end gap-3 px-3 py-2" style={{maxWidth: "50%", marginLeft: "auto"}}>
-            <div className="d-flex flex-column justify-content-center gap-2">
+          <div key={message.id} className="d-flex flex-row justify-content-end gap-3 px-3 py-2" style={{maxWidth: "45%", marginLeft: "auto"}}>
+            <div className="d-flex flex-column justify-content-center gap-2" style={{maxWidth: "100%"}}>
               <div className="d-flex flex-row gap-3 align-items-center" style={{marginLeft: "auto"}}>
                 <div style={{fontSize: "1.2rem",fontWeight: "bold"}}>{message.sender.email}</div>
                 <OverlayTrigger
@@ -53,7 +53,7 @@ export default function Message(props) {
                   <div style={{fontSize: "0.9rem"}}>{getHourAndMinutes(message.created_at)}</div>
                 </OverlayTrigger>
               </div>
-              <div className="message-container border rounded-4 p-3" style={{backgroundColor: "#8AB8BC", color: "black", marginLeft: "auto"}}>
+              <div className="message-container border rounded-4" style={{padding: "1em 1em 0 1em", marginLeft: "auto", backgroundColor: "#8AB8BC", color: "black"}}>
                 {parse(message.body)}
               </div>
             </div>
@@ -61,9 +61,9 @@ export default function Message(props) {
             <div ref={bottomRef}/>
           </div>
           :
-          <div key={message.id} className="d-flex flex-row gap-3 px-3 py-2" style={{maxWidth: "50%"}}>
+          <div key={message.id} className="d-flex flex-row gap-3 px-3 py-2" style={{maxWidth: "45%"}}>
             <i className="bi bi-person-circle" style={{fontSize: "3rem"}}></i>
-            <div className="d-flex flex-column justify-content-center gap-2">
+            <div className="d-flex flex-column justify-content-center gap-2" style={{maxWidth: "100%"}}>
               <div className="d-flex flex-row gap-3 align-items-center">
                 <div style={{fontSize: "1.2rem",fontWeight: "bold"}}>{message.sender.email}</div>
                 <OverlayTrigger
@@ -79,7 +79,7 @@ export default function Message(props) {
                   <div style={{fontSize: "0.9rem"}}>{getHourAndMinutes(message.created_at)}</div>
                 </OverlayTrigger>
               </div>
-              <div className="message-container border rounded-4 p-3" style={{backgroundColor: "#8AB8BC", color: "black", marginRight: "auto"}}>
+              <div className="message-container border rounded-4" style={{marginRight: "auto", padding: "1em 1em 0 1em", backgroundColor: "#8AB8BC", color: "black"}}>
                 {parse(message.body)}
               </div>
             </div>
