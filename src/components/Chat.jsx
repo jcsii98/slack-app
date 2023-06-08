@@ -91,8 +91,15 @@ function Chat(props) {
     }
   };
 
+  const onEnterPress = (event) => {
+    if(event.keyCode == 13 && event.shiftKey == false) {
+      event.preventDefault();
+      handleChatSubmit();
+    }
+  }
+
   const handleChatSubmit = (event) => {
-    event.preventDefault();
+    event?.preventDefault();
     if(receiverData?.id === undefined) {
       setAlert({status: "error", message: "Invalid recipient!"})
       return
@@ -159,6 +166,7 @@ function Chat(props) {
             plugins: `powerpaste a11ychecker tinymcespellchecker linkchecker wordcount table advtable editimage autosave advlist anchor advcode image link lists media mediaembed searchreplace visualblocks emoticons autoresize`,
             toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
           }}
+          onKeyDown={onEnterPress}
         />
         <div className="d-flex justify-content-end px-3">
           <i
