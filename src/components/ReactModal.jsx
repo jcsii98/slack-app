@@ -184,14 +184,14 @@ export default function ReactModal(props) {
                 :
                 alert.status === "success" ?
                 <div className="d-flex justify-content-center align-items-center gap-2 alert alert-success d-flex align-items-center p-2" role="alert" style={{fontWeight: "bold"}}>
-                  <i class="bi bi-check-circle-fill"></i>
+                  <i className="bi bi-check-circle-fill"></i>
                   <div>
                     {alert.message}
                   </div>
                 </div> 
                 :
                 <div className="d-flex justify-content-center align-items-center gap-2 alert alert-primary d-flex align-items-center p-2" role="alert" style={{fontWeight: "bold"}}>
-                  <div class="spinner-border text-primary" role="status">
+                  <div className="spinner-border text-primary" role="status">
                   </div>
                   <div>
                     {alert.message}
